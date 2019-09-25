@@ -16,6 +16,8 @@ bot.on('message', function(xd){
             case 'o7': xd.channel.send('o7'); break;
             case '\\o': xd.channel.send('o/'); break;
             case 'o/': xd.channel.send('\\o'); break;
+            // Commit próba
+            case 'commit': xd.channel.send('pls működj légyszi'); break;
         }
     }
 });
