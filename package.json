@@ -1,0 +1,26 @@
+{
+  "name": "NewHopeBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simond-hue/new-hope-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simond-hue/new-hope-bot/issues"
+  },
+  "homepage": "https://github.com/simond-hue/new-hope-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
+}

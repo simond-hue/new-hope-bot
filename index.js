@@ -1,10 +1,6 @@
-const Commando = require('discord.js-commando');
+const Commando = require('discord.js');
 const bot = new Commando.Client();
-const token = '1vj6Hx06b-Y8gA9GpveLDAbKGHMCBe9a';
-
-bot.registry.registerGroup('simple', 'Simple');
-bot.registry.registerDefaults();
-bot.registry.registerCommandsIn(__dirname + '/commands');
+const token = 'NjI2NTI3NDQ4ODU4ODg2MTg0.XYvb3w.FUyfF0dtn8Hb03SFxZjwVQUZe2Q';
 
 bot.on('message', function(xd){
     if(xd.author.bot) return;
