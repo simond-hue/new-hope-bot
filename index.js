@@ -1,25 +1,62 @@
-const Commando = require('discord.js');
-const bot = new Commando.Client();
-const token = 'NjI2NTI3NDQ4ODU4ODg2MTg0.XYvb3w.FUyfF0dtn8Hb03SFxZjwVQUZe2Q';
+const Discord = require("discord.js");
+const fs = require("fs");
+const botconfig = require("./botconfig.json");
+const bot = new Discord.Client({ disableEveryone: true });
+bot.commands = new Discord.Collection();
+bot.type = new Discord.Collection();
 
-bot.on('message', function(xd){
-    if(xd.author.bot) return;
-    else
-    {
-        switch(xd.content){
-            case 'nigger': xd.channel.send('nigger'); break;
-            case 'tsun': xd.channel.send('É-é-ééén egyáltalán nem akarom, hogy rám figyelj vagy valami ilyesmi BAKA~!! >///<'); break;
-            case 'o7': xd.channel.send('o7'); break;
-            case '\\o': xd.channel.send('o/'); break;
-            case 'o/': xd.channel.send('\\o'); break;
-            // Commit próba
-            case 'commit': xd.channel.send('pls működj légyszi'); break;
-        }
+fs.readdir("./commands", (err, files) => {
+    if (err) console.log(err);
+
+    let jsfile = files.filter(f => f.endsWith(".js"));
+    if (jsfile.length <= 0) {
+        console.log("Couldn't find commands.");
+        return;
     }
+
+    jsfile.forEach((f, i) => {
+        let props = require(`./commands/${f}`);
+        console.log(`${f} loaded`);
+        bot.commands.set(props.help.name, props);
+    });
+    console.log("Every command is loaded!");
 });
 
-bot.on('ready', function(){
-    console.log('Készen állok tes');
+bot.on("message", async message => {
+    if (message.author.bot) return;
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
+    let prefix = botconfig.prefix;
+    switch (message.content) {
+        case 'nigger':
+            message.channel.send('nigger');
+            break;
+        case 'tsun':
+            message.channel.send('É-é-ééén egyáltalán nem akarom, hogy rám figyelj vagy valami ilyesmi BAKA~!! >///<');
+            break;
+        case 'o7':
+            message.channel.send('o7');
+            break;
+        case '\\o':
+            message.channel.send('o/');
+            break;
+        case 'o/':
+            message.channel.send('\\o');
+            break;
+            // Commit próba
+        case 'commit':
+            message.channel.send('pls működj légyszi');
+            break;
+    }
+    let commandfile = bot.commands.get(cmd.slice(prefix.length));
+    if (commandfile) commandfile.run(bot, message, args);
 });
 
-bot.login(token);
+bot.on("ready", async() => {
+    console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
+    bot.user.setActivity("with ExMo's body", { type: "PLAYING" });
+    console.log(bot.commands);
+});
+
+bot.login(botconfig.token);
