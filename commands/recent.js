@@ -112,7 +112,7 @@ module.exports.run = async(bot, message, args) => {
                             modsName.set(536870912, "SV2");
                             modsName.set(1073741824, "LM");
                         }
-                        let modName;
+                        let modName = "";
                         for (i = 33; i > -1; i--) {
 
                             let modsCount = 33;
