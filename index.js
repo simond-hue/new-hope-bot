@@ -55,7 +55,7 @@ bot.on("message", async message => {
 
 bot.on("ready", async() => {
     console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
-    bot.user.setActivity("with ExMo's body", { type: "PLAYING" });
+    bot.user.setActivity("with Prüntyi", { type: "PLAYING" });
     console.log(bot.commands);
 });
 
