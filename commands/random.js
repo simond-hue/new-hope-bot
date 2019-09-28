@@ -1,19 +1,24 @@
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
-  if (args[0] === undefined) return message.channel.send("Usage: zeno-random message");
-  let messageArray = message.content.split("");
+  
+  if (args[0] === undefined) return message.channel.send(randomEmbed = new Discord.RichEmbed()
+    .setColor("#ff6ae7")
+    .addField("Usage", "-random <message>"));
+  let messageArray = message.content.split(" ");
   let messageString = "";
-    for (var i = 12; i < messageArray.length; i++) {
-      if ((Math.random() * 10) > 5) {
-        messageString += messageArray[i].toUpperCase();
+  
+    for (var i = 1; i < messageArray.length; i++) {
+      for(var j = 0; j < messageArray[i].length; j++){
+        let random = Math.round(Math.random());
+        if(random == 0){
+          messageString += messageArray[i][j].toLowerCase();
+        }
+        else{
+          messageString += messageArray[i][j].toUpperCase();
+        }
       }
-      else if((Math.random() * 10) < 5) {
-        messageString += messageArray[i].toLowerCase();
-      }
-      else {
-        messageString += messageArray[i];
-      }
+      messageString += " ";
     }
   return message.channel.send(messageString);
 }
