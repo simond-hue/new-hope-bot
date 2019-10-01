@@ -147,7 +147,7 @@ module.exports.run = async(bot, message, args) => {
 
 
                         message.channel.send(new Discord.RichEmbed()
-                            .setAuthor(`${profile.username}'s osu profile`, `https://a.ppy.sh/${profile.user_id}`, `https://osu.ppy.sh/users/${profile.user_id}`)
+                            .setAuthor(`${profile.username}'s osu profilja`, `https://a.ppy.sh/${profile.user_id}`, `https://osu.ppy.sh/users/${profile.user_id}`)
                             .setColor("#ff6ae7")
                             .setThumbnail(`https://a.ppy.sh/${profile.user_id}`)
                             .setDescription(`[${beatmap.title} by ${beatmap.artist}](https://osu.ppy.sh/beatmapsets/${beatmap.beatmapset_id})`)

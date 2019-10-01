@@ -18,12 +18,12 @@ module.exports.run = async(bot, message, args) => {
         let osuEmbed = new Discord.RichEmbed()
             .setAuthor(`${obj.username}'s osu profile`, `https://a.ppy.sh/${obj.user_id}`, `https://osu.ppy.sh/users/${obj.user_id}`)
             .setColor("#ff6ae7")
-            .setThumbnail("https://a.ppy.sh/${obj.user_id}")
+            .setThumbnail(`https://a.ppy.sh/${obj.user_id}`)
             .addField("PP", `**Ranked:** #${obj.pp_rank} \n **Country:** #${obj.pp_country_rank} ${obj.country} \n **Raw PP:** ${obj.pp_raw}`, true)
             .addField("Map ranks:", `**SS:** ${obj.count_rank_ss} \n **S:** ${obj.count_rank_s} \n **A:** ${obj.count_rank_a}`, true)
-            .addField("Score:", `**Ranked score:** ${obj.ranked_score} \n **Total score:** ${obj.total_score}`, true)
             .addField("Hit:", `**300:** ${obj.count300} \n **100:** ${obj.count100} \n **50:** ${obj.count50}`, true)
-            .addField("Other things:", `**Accuracy:** ${Math.floor(obj.accuracy)}% \n **Level:** ${obj.level} \n **Playcount:** ${obj.playcount}`, true);
+            .addField("Other things:", `**Accuracy:** ${Math.floor(obj.accuracy)}% \n **Level:** ${obj.level} \n **Playcount:** ${obj.playcount}`, true)
+            .addField("Score:", `**Ranked score:** ${obj.ranked_score} \n **Total score:** ${obj.total_score}`, true);
 
         return message.channel.send(osuEmbed);
 
