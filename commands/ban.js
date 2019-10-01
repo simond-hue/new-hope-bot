@@ -26,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
       .addField("Indok", bReason);
 
       let banChannel = message.guild.channels.find(`name`, "parancsok");
-      if (!banChannel) return message.channel.send("Couldn't find the specific channel");
+      if (!banChannel) return message.channel.send("A megadott csatorna nem található!");
 
       message.guild.member(bUser).ban(bReason);
 
