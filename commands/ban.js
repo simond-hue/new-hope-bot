@@ -6,7 +6,9 @@ module.exports.run = async (bot, message, args) => {
         .addField("Hiba!", "Használat: -ban <felhasználó> <indok>"));
       let bicon = message.mentions.users.first().displayAvatarURL;
       let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-      if(!bUser) return message.channel.send("Can't find user.");
+      if(!bUser) return message.channel.send(new Discord.RichEmbed()
+        .setColor("#BC4523")
+        .addField("Hiba!","Nem található a felhasználó!"));
       let bReason = args.join(" ").slice(22);
       if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(new Discord.RichEmbed()
         .setColor("#BC4523")

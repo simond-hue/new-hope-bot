@@ -1,28 +1,34 @@
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
-      if (args[0] === undefined) return message.channel.send("Usage: pico-kick @user reason");
-      let bicon = message.mentions.users.first().displayAvatarURL;
-      let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-      if(!kUser) return message.channel.send("Can't find user.");
-      let kReason = args.join(" ").slice(22);
-      if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("No can do pal!");
-      if(kUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked!");
-
-
+    if (args[0] === undefined || message.mentions.users.first() === undefined) return message.channel.send(new Discord.RichEmbed()
+        .setColor("#5C69A5")
+        .addField("Hiba!", "Használat: -kick <felhasználó> <indok>"));
+    let bicon = message.mentions.users.first().displayAvatarURL;
+    let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if(!bUser) return message.channel.send(new Discord.RichEmbed()
+        .setColor("#5C69A5")
+        .addField("Hiba!","Nem található a felhasználó!"));
+    let bReason = args.join(" ").slice(22);
+    if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send(new Discord.RichEmbed()
+        .setColor("#5C69A5")
+        .addField("Hiba!","Te nem rendelkezel kick jogokkal!"));
+    if(bUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send(new Discord.RichEmbed().
+        addField("Hiba!", "Ezt a felhasználót nem lehet kickelni!")
+        .setColor("#5C69A5"));
 
       let kickEmbed = new Discord.RichEmbed()
       .setDescription("~Kick~")
       .setColor("#5C69A5")
       .setThumbnail(bicon)
-      .addField("Kicked user", `${kUser} with ID ${kUser.id}`)
-      .addField("Kicked by", `${message.author} with ID ${message.author.id}`)
-      .addField("Kicked in", message.channel)
-      .addField("Time", message.createdAt)
-      .addField("Reason", kReason);
+      .addField("Kickelt felhasználó", `${kUser} with ID ${kUser.id}`)
+      .addField("Kickelte", `${message.author} with ID ${message.author.id}`)
+      .addField("Ebben a csatornában", message.channel)
+      .addField("Ekkor", message.createdAt)
+      .addField("Indok", kReason);
 
       let kickChannel = message.guild.channels.find(`name`, "parancsok");
-      if (!kickChannel) return message.channel.send("Couldn't find the specific channel");
+      if (!kickChannel) return message.channel.send("Nem található a csatorna!");
 
       message.guild.member(kUser).kick(kReason);
 
