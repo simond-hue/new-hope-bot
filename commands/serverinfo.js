@@ -14,6 +14,6 @@ module.exports.run = async (bot, message, args) => {
       return message.channel.send(serverembed);
 }
 module.exports.help = {
-name: "serverinfo",
+    name: "serverinfo",
     type: "legural"
 }

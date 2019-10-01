@@ -23,6 +23,6 @@ module.exports.run = async (bot, message, args) => {
       reportschannel.send(reportEmbed);
 }
 module.exports.help = {
-name: "report",
+    name: "report",
     type: "legural"
 }

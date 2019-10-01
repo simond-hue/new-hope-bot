@@ -23,6 +23,6 @@ module.exports.run = async (bot, message, args) => {
   return message.channel.send(messageString);
 }
 module.exports.help = {
-name: "random",
+    name: "random",
     type: "fun"
 }

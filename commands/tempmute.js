@@ -43,6 +43,6 @@ module.exports.run = async (bot, message, args) => {
 //end of module
 }
 module.exports.help = {
-name: "tempmute",
+    name: "tempmute",
     type: "admin"
 }

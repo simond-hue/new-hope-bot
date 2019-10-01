@@ -30,6 +30,6 @@ module.exports.run = async (bot, message, args) => {
       kickChannel.send(kickEmbed);
 }
 module.exports.help = {
-name: "kick",
+    name: "kick",
     type: "admin"
 }

@@ -1,23 +1,29 @@
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
-      if (args[0] === undefined) return message.channel.send("Usage: pico-ban @user reason");
+      if (args[0] === undefined || message.mentions.users.first() === undefined) return message.channel.send(new Discord.RichEmbed()
+        .setColor("#BC4523")
+        .addField("Hiba!", "Használat: -ban <felhasználó> <indok>"));
       let bicon = message.mentions.users.first().displayAvatarURL;
       let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
       if(!bUser) return message.channel.send("Can't find user.");
       let bReason = args.join(" ").slice(22);
-      if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("No can do pal!");
-      if(bUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be banned!");
+      if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(new Discord.RichEmbed()
+        .setColor("#BC4523")
+        .addField("Hiba!","Te nem rendelkezel ban jogokkal!"));
+      if(bUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send(new Discord.RichEmbed().
+        addField("Hiba!", "Ezt a felhasználót nem lehet bannolni!")
+        .setColor("#BC4523"));
 
       let banEmbed = new Discord.RichEmbed()
       .setDescription("~Ban~")
       .setColor("#BC4523")
       .setThumbnail(bicon)
-      .addField("Banned user", `${bUser} with ID ${bUser.id}`)
-      .addField("Banned by", `${message.author} with ID ${message.author.id}`)
-      .addField("Banned in", message.channel)
-      .addField("Time", message.createdAt)
-      .addField("Reason", bReason);
+      .addField("Bannolt felhasználó", `${bUser} ID ${bUser.id}`)
+      .addField("A bant kiosztotta", `${message.author} ID ${message.author.id}`)
+      .addField("Ebben a csatornában", message.channel)
+      .addField("Ekkor", message.createdAt)
+      .addField("Indok", bReason);
 
       let banChannel = message.guild.channels.find(`name`, "parancsok");
       if (!banChannel) return message.channel.send("Couldn't find the specific channel");

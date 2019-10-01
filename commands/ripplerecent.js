@@ -125,6 +125,6 @@ module.exports.run = async (bot, message, args) => {
     });
 }
 module.exports.help = {
-name: "ripple-recent",
+    name: "ripple-recent",
     type: "osu"
 }
