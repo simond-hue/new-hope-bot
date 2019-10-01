@@ -13,16 +13,16 @@ module.exports.run = async (bot, message, args) => {
 
       let bicon = bot.user.displayAvatarURL;
       let botembed = new Discord.RichEmbed()
-      .setDescription("Bot Information")
+      .setDescription("Bot Információ")
       .setColor("#56B82C")
       .setThumbnail(bicon)
-      .addField(`Uptime`, `${days} days ${hours} hours, ${mins} minutes, ${secs} seconds`)
-      .addField("Bot name", bot.user.username)
-      .addField("Created on", bot.user.createdAt)
-      .addField("Memory usage:", `${(process.memoryUsage().heapUsed / 1048576).toFixed(2)}MB\n`,);
+      .addField(`Uptime`, `${days} nap ${hours} óra, ${mins} perc, ${secs} másodperc`)
+      .addField("Bot név", bot.user.username)
+      .addField("Létrehozva", bot.user.createdAt)
+      .addField("Memória használat:", `${(process.memoryUsage().heapUsed / 1048576).toFixed(2)}MB\n`,);
       return message.channel.send(botembed);
 }
 module.exports.help = {
-name: "botinfo",
+    name: "botinfo",
     type: "regular"
 }

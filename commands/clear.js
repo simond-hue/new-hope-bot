@@ -2,14 +2,20 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
 
-  if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.reply("No ಠ_ಠ");
-  if (!args[0]) return message.channel.reply("Usage: pico-clear amount(max 500)");
-  if (args[0] > 500) return message.channel.reply("You only can delete 500 messages!");
+  if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .addField("Hiba!", "Nincs jogod üzeneteket törölni!"));
+  if (!args[0]) return message.channel.send(new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .addField("Hiba!", "Használat: -clear <üzenetek_száma>"));
+  if (args[0] > 500) return message.channel.send(new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .addField("Hiba!", "Max 500 üzenetet törölhetsz!"));
   try {
       message.channel.bulkDelete(args[0]).then(() => {
-    message.channel.send(`Cleared ${args[0]} messages`).then(msg => msg.delete(5000));
+      message.channel.send(`${args[0]} üzenet lett letörölve!`).then(msg => msg.delete(5000));
   }); } catch (e) {
-    console.log(e);
+      console.log(e);
     }
 }
 module.exports.help = {
