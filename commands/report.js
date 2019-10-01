@@ -21,6 +21,7 @@ module.exports.run = async (bot, message, args) => {
       .addField("Idő", message.createdAt)
       .addField("Ok: ", rReason);
 
+<<<<<<< HEAD
       let reportschannel = message.guild.channels.find(c => c.name === "log");
       if (reportschannel === undefined) return message.channel.send("A megadott csatorna nem található!");
       else{
@@ -28,6 +29,10 @@ module.exports.run = async (bot, message, args) => {
         .addField("Sikeres!", "Sikeres jelentés!")
         .setColor("#FF0000")).then(msg => msg.delete(5000));
       }
+=======
+      let reportschannel = message.guild.channels.find(c => c.name === "parancsok");
+      if (!reportschannel) return message.channel.send("Couldn't find the specific channel");
+>>>>>>> 47ae088896bee8cf8d79ea8e577b5231afc49769
       message.delete().catch(O_o=>{});
       reportschannel.send(reportEmbed);
 }
