@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports.run = async (bot, message, args) => {
       if (args[0] === undefined || message.mentions.users.first() === undefined) return message.channel.send(new Discord.RichEmbed()
         .setColor("#BC4523")
-        .addField("Hiba!", "Használat: -ban <felhasználó> <indok>"));
+        .addField("Hiba!", "Használat: -ban @<felhasználó> <indok>"));
       let bicon = message.mentions.users.first().displayAvatarURL;
       let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
       if(!bUser) return message.channel.send(new Discord.RichEmbed()
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
       .addField("Ekkor", message.createdAt)
       .addField("Indok", bReason);
 
-      let banChannel = message.guild.channels.find(`name`, "parancsok");
+      let banChannel = message.guild.channels.find(c => c.name === "log");
       if (!banChannel) return message.channel.send("A megadott csatorna nem található!");
 
       message.guild.member(bUser).ban(bReason);
