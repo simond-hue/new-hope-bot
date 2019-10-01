@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
       .addField("Ekkor", message.createdAt)
       .addField("Indok", kReason);
 
-      let kickChannel = message.guild.channels.find(`name`, "parancsok");
+      let kickChannel = message.guild.channels.find(c => c.name ==="parancsok");
       if (!kickChannel) return message.channel.send("Nem található a csatorna!");
 
       message.guild.member(kUser).kick(kReason);

@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
       .addField("Idő", message.createdAt)
       .addField("Ok: ", rReason);
 
-      let reportschannel = message.guild.channels.find(`name`, "parancsok");
+      let reportschannel = message.guild.channels.find(c => c.name === "parancsok");
       if (!reportschannel) return message.channel.send("Couldn't find the specific channel");
       message.delete().catch(O_o=>{});
       reportschannel.send(reportEmbed);
