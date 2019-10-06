@@ -17,8 +17,8 @@ module.exports.run = async (bot, message, args) => {
         if (err) return console.log(err);
       });
     message.channel.send(new Discord.RichEmbed()
-    .addField("Sikeres prefix változtatás!",`A bot parancsai mostantól a **${botconfig.prefix}** előtaggal érhetőek el!`)
-    .setColor("#CD1265"));
+        .addField("Sikeres prefix változtatás!",`A bot parancsai mostantól a **${botconfig.prefix}** előtaggal érhetőek el!`)
+        .setColor("#CD1265"));
 }
 module.exports.help = {
     name: "setprefix",

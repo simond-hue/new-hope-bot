@@ -1,18 +1,37 @@
 const Discord = require("discord.js");
 
-//TODO: megjegyeztetni az activity-t
-
 module.exports.run = async (bot, message, args) => {
-    if (message.member.id=197370398839406592 || //DEV ID-K
-        message.member.id==266553585255317505 ||
-        message.member.id==211956737027211264 ||
-        message.member.id==336471304653897728){
+    if (message.author.id==197370398839406592 || //DEV ID-K
+        message.author.id==266553585255317505 ||
+        message.author.id==211956737027211264 ||
+        message.author.id==336471304653897728){
             let messageStringSplit = message.content.split(" ");
             let activity = "";
             for(var i = 2; i < messageStringSplit.length; i++){
                 activity += messageStringSplit[i] + " ";
             }
-            bot.user.setActivity(activity, { type: messageStringSplit[1] });
+            let fs = require('fs');
+
+            let botconfig = require("../botconfig.json");
+            
+            botconfig.activity = activity;
+            botconfig.activity_type = messageStringSplit[1];
+            
+            fs.writeFileSync("botconfig.json", JSON.stringify(botconfig), function (err) {
+                if (err) return console.log(err);
+              });
+            if(botconfig.activity_type.toUpperCase() == "STREAMING"){
+                bot.user.setPresence({
+                    game: {
+                        name: botconfig.activity,
+                        type: botconfig.activity_type,
+                        url: botconfig.url
+                    }
+                });
+            }
+            else{
+                bot.user.setActivity(botconfig.activity, { type: botconfig.activity_type });
+            }
             return message.channel.send(new Discord.RichEmbed()
                 .setColor("#AB1256")
                 .addField("Sikeres átnevezés!", `A bot activityje mostantól ${messageStringSplit[1]} ${activity}`));

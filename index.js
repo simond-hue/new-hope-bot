@@ -55,7 +55,18 @@ bot.on("message", async message => {
 
 bot.on("ready", async() => {
     console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
-    bot.user.setActivity("with Prüntyi", { type: "PLAYING" });
+    if(botconfig.activity_type.toUpperCase() == "STREAMING"){
+        bot.user.setPresence({
+            game: {
+                name: botconfig.activity,
+                type: botconfig.activity_type,
+                url: botconfig.url
+            }
+        });
+    }
+    else{
+        bot.user.setActivity(botconfig.activity, { type: botconfig.activity_type });
+    }
     console.log(bot.commands);
 });
 
