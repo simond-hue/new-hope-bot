@@ -7,23 +7,54 @@ module.exports.run = async (bot, message, args) => {
             argsSplitSpace.length === 7){
                 let i = 1;
                 while(i < argsSplitSpace.length){ //Hexakód karakter check
-                    if (argsSplitSpace[i] !== 'A' && 
-                        argsSplitSpace[i] !== 'B' && 
-                        argsSplitSpace[i] !== 'C' && 
-                        argsSplitSpace[i] !== 'D' &&
-                        argsSplitSpace[i] !== 'E' &&
-                        argsSplitSpace[i] !== 'F' &&
+                    if (argsSplitSpace[i].toUpperCase() !== 'A' && 
+                        argsSplitSpace[i].toUpperCase() !== 'B' && 
+                        argsSplitSpace[i].toUpperCase() !== 'C' && 
+                        argsSplitSpace[i].toUpperCase() !== 'D' &&
+                        argsSplitSpace[i].toUpperCase() !== 'E' &&
+                        argsSplitSpace[i].toUpperCase() !== 'F' &&
                         argsSplitSpace[i] > 9 && argsSplitSpace[i] < 0){
-                            console.log(1);
                             break;
                         }
                     i++;
                 }
-                if(i < argsSplitSpace.length){
+                if(i < 7){
                     return message.channel.send(new Discord.RichEmbed()
-                        .setColor("#24A4B2")
+                        .setColor("#FFFFFF")
                         .addField("Hiba!", "Nem hexa kódban adtad meg a színt!"));
                 }
+                else{
+                    let lastMessage;
+                    message.channel.send(new Discord.RichEmbed()
+                            .setColor(argsSplitSpace)
+                            .setTitle("Névszín")
+                            .setThumbnail(`http://singlecolorimage.com/get/${argsSplitSpace.replace('#','')}/150x150.png`)
+                            .addField("Ezt a színt adtad meg!", "Kattints a megfelelő emojira!"))
+                        .then(() => {
+                            message.channel.fetchMessages({ limit: 1 }).then(messages => {
+                                lastMessage = messages.first();
+                                lastMessage.react('❌').then(lastMessage.react('👌'));
+                        })
+                        .then(() => {
+                            filter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
+                            lastMessage.awaitReactions(filter, {time: 7200})
+                            .then(collected => {
+                                console.log(collected);
+                                if(collected.users === 2){
+                                    return message.channel.send(new Discord.RichEmbed()
+                                        .setTitle("Névszín")
+                                        .addField("A névszín nem változott","Kilépés..."));
+                                }
+                            })
+                        })
+                    });
+                }
+        }
+        else{
+            message.channel.send(new Discord.RichEmbed()
+                        .setColor("#FFFFFF")
+                        .addField("Hiba!", "Nem hexa kódban adtad meg a színt!"));
+            
         }
     }
     else{
