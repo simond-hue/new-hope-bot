@@ -31,21 +31,100 @@ module.exports.run = async (bot, message, args) => {
                             .setThumbnail(`http://singlecolorimage.com/get/${argsSplitSpace.replace('#','')}/150x150.png`)
                             .addField("Ezt a színt adtad meg!", "Kattints a megfelelő emojira!"))
                         .then(() => {
-                            message.channel.fetchMessages({ limit: 1 }).then(messages => {
+                            message.channel.fetchMessages({ limit: 1 }).then(async(messages) => {
                                 lastMessage = messages.first();
-                                lastMessage.react('❌').then(lastMessage.react('👌'));
+                                await lastMessage.react('❌');
+                                await lastMessage.react('👌');
                         })
                         .then(() => {
-                            filter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
-                            lastMessage.awaitReactions(filter, {time: 7200})
-                            .then(collected => {
-                                console.log(collected);
-                                if(collected.users === 2){
-                                    return message.channel.send(new Discord.RichEmbed()
-                                        .setTitle("Névszín")
-                                        .addField("A névszín nem változott","Kilépés..."));
+                            const collector = lastMessage.createReactionCollector((reaction, user) => 
+                            user.id === message.author.id &&
+                            reaction.emoji.name === "👌" ||
+                            reaction.emoji.name === "❌"
+                            ,{ time: 30000 }).once("collect", async(reaction) => {
+                                const chosen = reaction.emoji.name;
+                                if(chosen === "👌"){
+                                    if(message.guild.me.hasPermission("MANAGE_MESSAGES")){
+                                        if(message.guild.me.hasPermission("MANAGE_ROLES")){
+                                            let role = message.guild.roles.find(role => role.name === `USER-${message.member.id}`);
+                                            if(!role){
+                                                await message.guild.createRole({
+                                                    name: `USER-${message.member.id}`,
+                                                    color: argsSplitSpace,
+                                                })
+                                                .then(async(role) => {
+                                                    message.member.addRole(role);
+                                                    await lastMessage.delete();
+                                                    message.channel.send(new Discord.RichEmbed()
+                                                        .setColor(argsSplitSpace)
+                                                        .setTitle("Névszín")
+                                                        .setThumbnail(`http://singlecolorimage.com/get/${argsSplitSpace.replace('#','')}/150x150.png`)
+                                                        .addField(`Sikeres névszín állítás!`, `Mostantól a jobb oldali szín a neved színe! <@${message.author.id}>\nHa meguntad, ugyanígy át tudod állítani!`));
+                                                    return;
+                                                });
+                                            }
+                                            else{
+                                                await role.delete();
+                                                await message.guild.createRole({
+                                                    name: `USER-${message.member.id}`,
+                                                    color: argsSplitSpace,
+                                                })
+                                                .then(async(role) => {
+                                                    message.member.addRole(role);
+                                                    await lastMessage.delete();
+                                                    message.channel.send(new Discord.RichEmbed()
+                                                        .setColor(argsSplitSpace)
+                                                        .setTitle("Névszín")
+                                                        .setThumbnail(`http://singlecolorimage.com/get/${argsSplitSpace.replace('#','')}/150x150.png`)
+                                                        .addField(`Sikeres névszín állítás!`, `Mostantól a jobb oldali szín a neved színe! <@${message.author.id}>\nHa meguntad, ugyanígy át tudod állítani!`));
+                                                    return;
+                                                });
+                                            }
+                                        }
+                                        else{
+                                            message.channel.send(new Discord.RichEmbed()
+                                                .addField("Hiba!","Szükségem van role kezelésre!")
+                                                .setColor("#FFFFFF"));
+                                        }
+                                    }
+                                    else{
+                                        message.channel.send(new Discord.RichEmbed()
+                                            .addField("Hiba!","Szükségem van üzenet kezelésre!")
+                                            .setColor("#FFFFFF"));
+                                    }
+                                }else if(chosen === "❌"){
+                                    if(message.guild.me.hasPermission("MANAGE_MESSAGES")){
+                                        lastMessage.delete();
+                                        let embed = new Discord.RichEmbed()
+                                            .setColor('#FFFFFF')
+                                            .addField("Mégse","A neved színét nem változtattad meg!");
+                                        message.channel.send(embed)
+                                        .then(async(embed) => {
+                                            await embed.delete(5000);
+                                            message.delete();
+                                        });
+                                    }
+                                    else{
+                                        messages.channel.send(new Discord.RichEmbed()
+                                            .addField("Hiba!","Szükségem van üzenet kezelésre!")
+                                            .setColor("#FFFFFF"));
+                                    }
                                 }
+                                return;
                             })
+                            .once("end", () => {
+                                if(collector.users.size === 0){
+                                        lastMessage.delete();
+                                        let embed = new Discord.RichEmbed()
+                                            .setColor('#FFFFFF')
+                                            .addField("Timeout","Túllépted az időkorlátot!");
+                                        message.channel.send(embed)
+                                        .then(async(embed) => {
+                                            await embed.delete(5000);
+                                            message.delete();
+                                        });
+                                    }
+                            });
                         })
                     });
                 }
