@@ -145,11 +145,10 @@ module.exports.run = async(bot, message, args) => {
                             modName = "+" + modName;
                         }
 
-
                         message.channel.send(new Discord.RichEmbed()
                             .setAuthor(`${profile.username}'s osu profilja`, `https://a.ppy.sh/${profile.user_id}`, `https://osu.ppy.sh/users/${profile.user_id}`)
                             .setColor("#ff6ae7")
-                            .setThumbnail(`https://a.ppy.sh/${profile.user_id}`)
+                            .setThumbnail(`https://b.ppy.sh/thumb/${beatmap.beatmapset_id}.jpg`)
                             .setDescription(`[${beatmap.title} by ${beatmap.artist}](https://osu.ppy.sh/beatmapsets/${beatmap.beatmapset_id})`)
                             .addField("Rank and mods:", `${emote} ${modName}`, true)
                             .addField("Score", recentScore.score, true)
