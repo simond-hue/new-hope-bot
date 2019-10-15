@@ -8,6 +8,7 @@ module.exports.run = async (bot, message, args) => {
         .addField("Újraindítás...", "Újraindítás..."))
     .then(msg => bot.destroy())
     .then(() => bot.login(botconfig.token));
+    bot.commands = new Discord.Collection();
     fs.readdir("./commands", (err, files) => {
         if (err) console.log(err);
     
