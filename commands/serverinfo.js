@@ -4,13 +4,13 @@ const os = require('os');
 module.exports.run = async (bot, message, args) => {
       let sicon = message.guild.iconURL;
       let serverembed = new Discord.RichEmbed()
-      .setDescription("Server Information")
+      .setDescription("Szerver Információ")
       .setColor("#58C2AB")
       .setThumbnail(sicon)
-      .addField("Server name", message.guild.name)
-      .addField("Created on", message.guild.createdAt)
-      .addField("You joined at", message.member.joinedAt)
-      .addField("Total Members", message.guild.memberCount)
+      .addField("Szerver neve:", message.guild.name)
+      .addField("Létrehozás dátuma:", message.guild.createdAt)
+      .addField("Belépésed dátuma:", message.member.joinedAt)
+      .addField("Tagok száma:", message.guild.memberCount)
       return message.channel.send(serverembed);
 }
 module.exports.help = {
