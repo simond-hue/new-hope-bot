@@ -85,6 +85,7 @@ bot.on("message", async message => {
     
 });
 
+
 bot.on("ready", async() => {
     console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
     if (botconfig.activity_type.toUpperCase() == "STREAMING") {
