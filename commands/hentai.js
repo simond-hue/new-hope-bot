@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args) => {
     if(message.channel.nsfw){
         let arg = message.content.split(' ');
         if(arg.length === 1){
-            request(`https://konachan.com/post.json?limit=100&tags=rating%3Aexplicit`,
+            request(`https://konachan.com/post.json?limit=2500&tags=rating%3Aexplicit`,
             (error, response, body) => {
                 if(response.statusCode === 200){
                     data = JSON.parse(response.body);
@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
             });
         }
         else{
-            request(`https://konachan.com/post.json?limit=100&tags=rating%3Aexplicit`+arg.join("+"),
+            request(`https://konachan.com/post.json?limit=2500&tags=rating%3Aexplicit`+arg.join("+"),
             (error, response, body) => {
                 if(response.statusCode === 200){
                     data = JSON.parse(response.body);
