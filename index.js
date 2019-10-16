@@ -50,7 +50,10 @@ bot.on("message", async message => {
             break;
     }
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
-    if (commandfile) commandfile.run(bot, message, args);
+    if(botconfig.prefix === cmd.slice(0,prefix.length)){
+        if (commandfile) commandfile.run(bot, message, args);
+    }
+    
 });
 
 bot.on("ready", async() => {
