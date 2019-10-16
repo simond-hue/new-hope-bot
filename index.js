@@ -5,6 +5,21 @@ const bot = new Discord.Client({ disableEveryone: true });
 bot.commands = new Discord.Collection();
 bot.type = new Discord.Collection();
 
+//szólánchoz
+const wordch = require("./wordchain.js");
+const wordchconfig = require("./wordchconfig.json");
+var wordchains = new Map();
+
+Object.getOwnPropertyNames(wordchconfig).forEach(
+    function(v, i, a) {
+        if (v !== "0") {
+            wordchains.set(v, new wordch.Wordchain(v, wordchconfig));
+        }
+    }
+);
+
+//vége
+
 fs.readdir("./commands", (err, files) => {
     if (err) console.log(err);
 
@@ -49,6 +64,20 @@ bot.on("message", async message => {
             message.channel.send('pls működj légyszi');
             break;
     }
+    if (wordchains.has(message.channel.id)) {
+        await wordchains.get(message.channel.id).processMessage(message, cmd, wordchconfig);
+        fs.writeFileSync("./wordchconfig.json", JSON.stringify(wordchconfig));
+    }
+
+    if (message.content === prefix + "setwordchainch") {
+        if (message.member.hasPermission("MANAGE_MESSAGES") || message.author.id === "211956737027211264") {
+            await wordchains.set(message.channel.id, new wordch.Wordchain(message.channel.id, wordchconfig));
+            await message.channel.send("Ez a szoba beállítva szólánc szobának!");
+        } else {
+            return message.channel.send("No ಠ_ಠ");
+        }
+
+    }
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if(botconfig.prefix === cmd.slice(0,prefix.length)){
         if (commandfile) commandfile.run(bot, message, args);
@@ -58,7 +87,7 @@ bot.on("message", async message => {
 
 bot.on("ready", async() => {
     console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
-    if(botconfig.activity_type.toUpperCase() == "STREAMING"){
+    if (botconfig.activity_type.toUpperCase() == "STREAMING") {
         bot.user.setPresence({
             game: {
                 name: botconfig.activity,
@@ -66,11 +95,10 @@ bot.on("ready", async() => {
                 url: botconfig.url
             }
         });
-    }
-    else{
+    } else {
         bot.user.setActivity(botconfig.activity, { type: botconfig.activity_type });
     }
     console.log(bot.commands);
 });
 
-bot.login(botconfig.token);
+bot.login(process.env.token);
