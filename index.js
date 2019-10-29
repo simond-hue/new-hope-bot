@@ -111,5 +111,4 @@ bot.on("ready", async() => {
     console.log(bot.commands);
 });
 
-//bot.login(process.env.token);
-bot.login("NDMyNTY3MTI5ODg0MTk2ODk0.XbG2Og.0fnSaD0LHD05eYRDB6TkfR6ljNs");
+bot.login(process.env.token);
