@@ -4,7 +4,7 @@ const request = require('request');
 module.exports.run = async (bot, message, args) => {
     let arg = message.content.split(' ');
     if(arg.length === 1){
-        request(`https://konachan.com/post.json?limit=1000&tags=rating%3Asafe`,
+        request(`https://konachan.com/post.json?limit=1&tags=rating%3Asafe+order%3Arandom`,
         (error, response, body) => {
             if(response.statusCode === 200){
                 data = JSON.parse(response.body);
@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
         });
     }
     else{
-        request(`https://konachan.com/post.json?limit=1000&tags=rating%3Asafe`+arg.join("+"),
+        request(`https://konachan.com/post.json?limit=1&tags=rating%3Asafe+order%3Arandom`+arg.join("+"),
         (error, response, body) => {
             if(response.statusCode === 200){
                 data = JSON.parse(response.body);
