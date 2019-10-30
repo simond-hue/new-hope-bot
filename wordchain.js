@@ -132,7 +132,7 @@ module.exports.Wordchain = class Wordchain {
                             .setDescription("A játék véget ért! Nem használhatjátok kétszer ugyan azt a szót!")
                             .setColor("#314e5f")
                             .addField("Aki elrontotta a szóláncot:", `<@${message.author.id}>`)
-                            .addField(`A legtöbb szót író személy: ${user}`, `Akinek ${coins[user].coins} pontja van.`);
+                            .addField(`A legtöbb szót író személy: <@${user}>`, `Akinek ${coins[user].coins} pontja van.`);
                         await message.channel.send(wordChainEmbedEnd);
                         return this.wordchainobj;
                     }

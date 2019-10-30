@@ -65,6 +65,14 @@ bot.on("message", async message => {
             message.channel.send('pls működj légyszi');
             break;
     }
+    if (message.content === prefix + "delwordchainch") {
+        if (message.member.hasPermission("MANAGE_MESSAGES") || message.author.id === "211956737027211264") {
+            await wordchains.delete(message.channel.id);
+            await message.channel.send("Ez a szoba nem szólánc szoba többé!");
+        } else {
+            return message.channel.send("No ಠ_ಠ");
+        }
+    }
     if (wordchains.has(message.channel.id)) {
         await wordchains.get(message.channel.id).processMessage(message, cmd, wordchconfig);
         fs.writeFileSync("./wordchconfig.json", JSON.stringify(wordchconfig));
@@ -80,10 +88,10 @@ bot.on("message", async message => {
 
     }
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
-    if(botconfig.prefix === cmd.slice(0,prefix.length)){
+    if (botconfig.prefix === cmd.slice(0, prefix.length)) {
         if (commandfile) commandfile.run(bot, message, args);
     }
-    
+
 });
 
 
