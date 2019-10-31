@@ -13,7 +13,6 @@ module.exports.run = async (bot, message, args) => {
         .addField("Csatlakozás dátuma:", member.joinedAt)
         .addField("Utoljára látva:", member.lastMessage.createdAt)
       return message.channel.send(userembed);
-
 }
 module.exports.help = {
     name: "userinfo",
