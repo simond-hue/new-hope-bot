@@ -8,13 +8,13 @@ bot.type = new Discord.Collection();
 
 //szólánchoz
 const wordch = require("./wordchain.js");
-const wordchconfig = require("./wordchconfig.json");
+const wordchainconfig = require("./wordchainconfig.json");
 var wordchains = new Map();
 
-Object.getOwnPropertyNames(wordchconfig).forEach(
+Object.getOwnPropertyNames(wordchainconfig).forEach(
     function(v, i, a) {
         if (v !== "0") {
-            wordchains.set(v, new wordch.Wordchain(v, wordchconfig));
+            wordchains.set(v, new wordch.Wordchain(v, wordchainconfig));
         }
     }
 );
@@ -74,13 +74,13 @@ bot.on("message", async message => {
         }
     }
     if (wordchains.has(message.channel.id)) {
-        await wordchains.get(message.channel.id).processMessage(message, cmd, wordchconfig);
-        fs.writeFileSync("./wordchconfig.json", JSON.stringify(wordchconfig));
+        await wordchains.get(message.channel.id).processMessage(message, cmd, wordchainconfig);
+        fs.writeFileSync("./wordchainconfig.json", JSON.stringify(wordchainconfig));
     }
 
     if (message.content === prefix + "setwordchainch") {
         if (message.member.hasPermission("MANAGE_MESSAGES") || message.author.id === "211956737027211264") {
-            await wordchains.set(message.channel.id, new wordch.Wordchain(message.channel.id, wordchconfig));
+            await wordchains.set(message.channel.id, new wordch.Wordchain(message.channel.id, wordchainconfig));
             await message.channel.send("Ez a szoba beállítva szólánc szobának!");
         } else {
             return message.channel.send("No ಠ_ಠ");

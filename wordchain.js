@@ -3,10 +3,10 @@ const Discord = require("discord.js");
 const betuk = ['a', 'á', 'b', 'c', 'd', 'e', 'é', 'f', 'g', 'h', 'i', 'í', 'j', 'k', 'l', 'm', 'n', 'o', 'ó', 'ö', 'ő', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'ü', 'ű', 'v', 'w', 'x', 'y', 'z'];
 
 module.exports.Wordchain = class Wordchain {
-    constructor(channelid, wordchconfig) {
+    constructor(channelid, wordchainconfig) {
 
-        if (!wordchconfig[channelid]) {
-            wordchconfig[channelid] = {
+        if (!wordchainconfig[channelid]) {
+            wordchainconfig[channelid] = {
                 channelid: channelid,
                 start: false,
                 lastID: undefined,
@@ -16,11 +16,11 @@ module.exports.Wordchain = class Wordchain {
                 lancpontok: []
             };
         }
-        this.wordchainobj = wordchconfig[channelid];
+        this.wordchainobj = wordchainconfig[channelid];
         console.log(this.wordchainobj);
     }
 
-    async processMessage(message, cmd, wordchconfig) {
+    async processMessage(message, cmd, wordchainconfig) {
         if (!this.wordchainobj.start) {
             var word = cmd.toLowerCase();
             if (word.length < 2) {
@@ -57,7 +57,7 @@ module.exports.Wordchain = class Wordchain {
             message.channel.send("A legelső szó: " + word);
             this.wordchainobj.lancpontokid.push(this.wordchainobj.lastID);
             this.wordchainobj.lancpontok.push(1);
-            wordchconfig[message.channel.id] = this.wordchainobj;
+            wordchainconfig[message.channel.id] = this.wordchainobj;
             await message.channel.send("A következő szónak ezzel a karakterrel kell kezdődnie: " + this.wordchainobj.lastCharacter);
             return this.wordchainobj;
         } else if (this.wordchainobj.start) {
@@ -127,7 +127,7 @@ module.exports.Wordchain = class Wordchain {
                             lancpontok: []
                         };
 
-                        wordchconfig[message.channel.id] = this.wordchainobj;
+                        wordchainconfig[message.channel.id] = this.wordchainobj;
                         let wordChainEmbedEnd = new Discord.RichEmbed()
                             .setDescription("A játék véget ért! Nem használhatjátok kétszer ugyan azt a szót!")
                             .setColor("#314e5f")
@@ -150,7 +150,7 @@ module.exports.Wordchain = class Wordchain {
                     this.wordchainobj.lancpontokid.push(message.author.id);
                     this.wordchainobj.lancpontok.push(1);
                 }
-                wordchconfig[message.channel.id] = this.wordchainobj;
+                wordchainconfig[message.channel.id] = this.wordchainobj;
                 await message.channel.send("A következő szónak ezzel a betűvel kell kezdődnie: " + this.wordchainobj.lastCharacter);
                 return this.wordchainobj;
             } else {
