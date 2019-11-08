@@ -35,7 +35,7 @@ fs.readdir("./commands", (err, files) => {
         console.log(`${f} loaded`);
         bot.commands.set(props.help.name, props);
     });
-    console.log("Every command is loaded!");
+    console.log("Every command is loaded!);
 });
 
 bot.on("message", async message => {
