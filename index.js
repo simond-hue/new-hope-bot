@@ -111,4 +111,4 @@ bot.on("ready", async() => {
     console.log(bot.commands);
 });
 
-bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.Xbw3wA.eorMrptPoBE5FERcN-j_nmINnKM");
+bot.login(/*"process.env.token"*/"NjI2NTI3NDQ4ODU4ODg2MTg0.Xca1Tw.yUNeLNYzSJT_wNFhedPFZr2smQg");
