@@ -10,9 +10,8 @@ module.exports.run = async (bot, message, args) => {
                 data = JSON.parse(response.body);
                 let count = Object.keys(data).length;
                 if(count > 0){
-                    let rnd = Math.floor(Math.random() * Math.floor(count));
                     return message.channel.send(new Discord.RichEmbed()
-                        .setImage(data[rnd].file_url)
+                        .setImage(data[0].file_url)
                         .setColor('#DABC12'));
                 }
                 else{
@@ -35,9 +34,8 @@ module.exports.run = async (bot, message, args) => {
                 data = JSON.parse(response.body);
                 let count = Object.keys(data).length;
                 if(count > 0){
-                    let rnd = Math.floor(Math.random() * Math.floor(count));
                     return message.channel.send(new Discord.RichEmbed()
-                        .setImage(data[rnd].file_url)
+                        .setImage(data[0].file_url)
                         .setColor('#DABC12'));
                 }
                 else{
