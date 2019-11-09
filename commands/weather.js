@@ -16,10 +16,10 @@ function r(url){
 function stringify(input){
     inputStringified = "";
     if(input.getHours() <= 9){
-        inputStringified += "0" + (input.getHours()-1)+":";
+        inputStringified += "0" + (input.getHours())+":";
     }
     else{
-        inputStringified += (input.getHours()-1)+":";
+        inputStringified += (input.getHours())+":";
     }
 
     if(input.getMinutes() <= 9){
