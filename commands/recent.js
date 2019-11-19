@@ -7,12 +7,12 @@ module.exports.run = async(bot, message, args) => {
         name = message.author.username;
     }
     let osuEmbed = new Discord.RichEmbed()
-        .setColor("#ff6ae7")
+        .setColor("#DABC12")
         .setThumbnail("https://images.discordapp.net/avatars/289066747443675143/0d8ad3a7a6b0a56f3527019c00ccc4b0.png");
     request(`https://osu.ppy.sh/api/get_user?k=ff99e1fd848cec589c11b99b773bfcd49d132e9a&u=${name}&type=string`, (error, response, body) => {
         let profile = JSON.parse(response.body)[0];
         if(profile == undefined) message.channel.send(new Discord.RichEmbed()
-            .setColor("#ff6ae7")
+            .setColor("#DABC12")
             .addField("Hiba!","Nem megfelelő felhasználónév!"));
         else{
             let data = response.body;
@@ -23,7 +23,7 @@ module.exports.run = async(bot, message, args) => {
                 
                 if (recentScore == undefined) {
                     message.channel.send(new Discord.RichEmbed()
-                        .setColor("#ff6ae7")
+                        .setColor("#DABC12")
                         .addField(`${profile.username} játékosnak nem volt mostanában play-e!`, "Próbáld újra!"));
                 } 
                 else {
@@ -147,7 +147,7 @@ module.exports.run = async(bot, message, args) => {
 
                         message.channel.send(new Discord.RichEmbed()
                             .setAuthor(`${profile.username}'s osu profilja`, `https://a.ppy.sh/${profile.user_id}`, `https://osu.ppy.sh/users/${profile.user_id}`)
-                            .setColor("#ff6ae7")
+                            .setColor("#DABC12")
                             .setThumbnail(`https://b.ppy.sh/thumb/${beatmap.beatmapset_id}.jpg`)
                             .setDescription(`[${beatmap.title} by ${beatmap.artist}](https://osu.ppy.sh/beatmapsets/${beatmap.beatmapset_id})`)
                             .addField("Rank and mods:", `${emote} ${modName}`, true)

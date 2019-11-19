@@ -3,8 +3,12 @@ const fs = require("fs");
 const botconfig = require("./botconfig.json");
 const bot = new Discord.Client({ disableEveryone: true });
 const request = require('request');
+const autohentai = require('./autoHentai.json')
+const autoanime = require('./autoAnime.json');
 bot.commands = new Discord.Collection();
 bot.type = new Discord.Collection();
+servers = {};
+var VoltLejatszvaZene = false;
 
 //szólánchoz
 const wordch = require("./wordchain.js");
@@ -89,11 +93,24 @@ bot.on("message", async message => {
     }
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if (botconfig.prefix === cmd.slice(0, prefix.length)) {
-        if (commandfile) commandfile.run(bot, message, args);
+        if (commandfile && commandfile.type !== 'auto') commandfile.run(bot, message, args);
+        else{
+            bot.commands.forEach(element => {
+                if(element.help.alias){
+                    var i = 0;
+                    while(i<element.help.alias.length){
+                        if(element.help.alias[i] === cmd.slice(prefix.length)){
+                            element.run(bot,message,args);
+                            break;
+                        }
+                        i++;
+                    }
+                }
+            });
+        }
     }
 
 });
-
 
 bot.on("ready", async() => {
     console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
@@ -108,7 +125,50 @@ bot.on("ready", async() => {
     } else {
         bot.user.setActivity(botconfig.activity, { type: botconfig.activity_type });
     }
+    //autohentai és autoanime
+    timeH = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
+    setInterval(() => {
+        timeH = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
+        if(autohentai){
+            for(var attributum in autohentai){
+                bot.commands.get('autohentai').run(bot,autohentai[attributum].channel);
+            }
+        }
+    }, timeH);
+    timeA = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
+    setInterval(() => {
+        timeA = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
+        if(autoanime){
+            for(var attributum in autoanime){
+                bot.commands.get('autoanime').run(bot,autoanime[attributum].channel);
+            }
+        }
+    }, timeA);
+    //done
     console.log(bot.commands);
 });
 
-bot.login(process.env.token);
+bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XccJuw.GmaKCANbKrvoeK4LCKP1l9BD-pA");
+
+exports.setServers = function setServer(server){
+    return this.servers = server;
+}
+
+exports.getServers = function getServers(){
+    if(this.servers === undefined){
+        return {};
+    }
+    else{
+        return this.servers;
+    }
+}
+
+exports.servers = servers;
+
+exports.setVoltLejatszvaZene = function setVoltLejatszvaZene(value){
+    return this.VoltLejatszvaZene = value;
+}
+
+exports.getVoltLejatszvaZene = function getVoltLejatszvaZene(){
+    return this.VoltLejatszvaZene;
+}

@@ -19,8 +19,12 @@
   "homepage": "https://github.com/simond-hue/new-hope-bot#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
+    "iconv": "^2.3.5",
+    "libsodium-wrappers": "^0.7.6",
+    "opusscript": "0.0.7",
     "request": "^2.88.0",
-    "ripple-node": "^1.0.5"
+    "ripple-node": "^1.0.5",
+    "ytdl-core": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"

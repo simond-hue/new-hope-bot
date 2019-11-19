@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args) => {
       let bicon = bot.user.displayAvatarURL;
       let botembed = new Discord.RichEmbed()
       .setDescription("Bot Információ")
-      .setColor("#56B82C")
+      .setColor("#DABC12")
       .setThumbnail(bicon)
       .addField(`Uptime`, `${days} nap ${hours} óra, ${mins} perc, ${secs} másodperc`)
       .addField("Bot név", bot.user.username)

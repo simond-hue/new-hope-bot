@@ -33,12 +33,12 @@ module.exports.run = async (bot, message, args) => {
                 bot.user.setActivity(botconfig.activity, { type: botconfig.activity_type });
             }
             return message.channel.send(new Discord.RichEmbed()
-                .setColor("#AB1256")
+                .setColor("#DABC12")
                 .addField("Sikeres átnevezés!", `A bot activityje mostantól ${messageStringSplit[1]} ${activity}`));
         }
     else{
         return message.channel.send(new Discord.RichEmbed()
-            .setColor("#AB1256")
+            .setColor("#DABC12")
             .addField("Hiba!", "Csak a developerek tudják az activity-t változtatni!"));
     }
 }

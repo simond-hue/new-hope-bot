@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args) => {
       if(member.lastMessage){
         return(message.channel.send(new Discord.RichEmbed()
         .setDescription("Felhasználó Információja")
-        .setColor("#58C2AB")
+        .setColor("#DABC12")
         .setThumbnail(user.avatarURL)
         .addField("ID:", user.id)
         .addField("Regisztráció dátuma:", user.createdAt)
@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
       else{
         return(message.channel.send(new Discord.RichEmbed()
         .setDescription("Felhasználó Információja")
-        .setColor("#58C2AB")
+        .setColor("#DABC12")
         .setThumbnail(user.avatarURL)
         .addField("ID:", user.id)
         .addField("Regisztráció dátuma:", user.createdAt)

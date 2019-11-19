@@ -29,14 +29,19 @@ module.exports.run = async (bot, message, args) => {
             });
         }
         else{
-            request(`https://konachan.com/post.json?limit=1&tags=rating%3Aexplicit+order%3Arandom`+arg.join("+"),
+            let query = [];
+            for(var i = 1; i<arg.length; i++){
+                query[i] = arg[i];
+            }
+
+            request(`https://konachan.com/post.json?limit=1&tags=rating%3Aexplicit+order%3Arandom`+query.join('+'),
             (error, response, body) => {
                 if(response.statusCode === 200){
                     data = JSON.parse(response.body);
                     let count = Object.keys(data).length;
                     if(count > 0){
                         return message.channel.send(new Discord.RichEmbed()
-                            .setImage(data[0].file_url)
+                            .setImage(data[0].sample_url)
                             .setColor('#DABC12'));
                     }
                     else{

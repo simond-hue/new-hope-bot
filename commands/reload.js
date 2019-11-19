@@ -4,10 +4,10 @@ const fs = require("fs");
 module.exports.run = async (bot, message, args) => {
     let botconfig = require("../botconfig.json");
     message.channel.send(new Discord.RichEmbed()
-        .setColor("#FFFFFF")
+        .setColor("#DABC12")
         .addField("Újraindítás...", "Újraindítás..."))
     .then(msg => bot.destroy())
-    .then(() => bot.login(process.env.token));
+    .then(() => bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XccJuw.GmaKCANbKrvoeK4LCKP1l9BD-pA"));
     bot.commands = new Discord.Collection();
     fs.readdir("./commands", (err, files) => {
         if (err) console.log(err);

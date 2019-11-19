@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args) => {
       let sicon = message.guild.iconURL;
       let serverembed = new Discord.RichEmbed()
       .setDescription("Szerver Információ")
-      .setColor("#58C2AB")
+      .setColor("#DABC12")
       .setThumbnail(sicon)
       .addField("Szerver neve:", message.guild.name)
       .addField("Létrehozás dátuma:", message.guild.createdAt)

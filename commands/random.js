@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports.run = async (bot, message, args) => {
   
   if (args[0] === undefined) return message.channel.send(randomEmbed = new Discord.RichEmbed()
-    .setColor("#ff6ae7")
+    .setColor("#DABC12")
     .addField("Usage", "-random <message>"));
   let messageArray = message.content.split(" ");
   let messageString = "";

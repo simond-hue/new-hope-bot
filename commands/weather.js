@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const request = require('request');
 
+
 function r(url){
     return new Promise((resolve, reject) =>{
         request(url,
@@ -16,10 +17,11 @@ function r(url){
 function stringify(input){
     inputStringified = "";
     if(input.getHours() <= 9){
-        inputStringified += "0" + (input.getHours())+":";
+        if(input.getHours() === 0) inputStringified += "23:";
+        else inputStringified += "0" + (input.getHours()-1)+":";
     }
     else{
-        inputStringified += (input.getHours())+":";
+        inputStringified += (input.getHours()-1)+":";
     }
 
     if(input.getMinutes() <= 9){
@@ -66,6 +68,18 @@ function makeAsciiCompatible(input){
     return output;
 }
 
+function makeUpperCase(input){
+    split = input.split(' ');
+    var output = "";
+    for(var i = 0; i<split.length; i++){
+        output+=split[i].substr(0,1).toUpperCase() + split[i].substr(1,split[i].length) + " ";
+    }
+    if(input.includes(',')){
+        output = output.replace(output.substr(output.indexOf(','),output.length),"");
+    }
+    return output;
+}
+
 module.exports.run = async (bot, message, args) => {
     let telepules = "";
     let msg = "";
@@ -104,11 +118,13 @@ module.exports.run = async (bot, message, args) => {
 
                 localTimeSet = new Date(localTimeData.zones[0].timestamp*1000);
 
+                telepules = makeUpperCase(telepules);
+
                 message.channel.send(new Discord.RichEmbed()
-                    .setColor("#72bac1")
+                    .setColor("#DABC12")
                     .setTitle("Időjárás")
                     .setThumbnail(`http://openweathermap.org/img/w/${data.weather[0].icon}.png`)
-                    .addField("🏙️ Település",`${telepules}, ${data.sys.country}`)
+                    .addField("🏙️ Település",`${telepules.substr(0,1).toUpperCase()+telepules.substr(1,telepules.length)}, ${data.sys.country}`)
                     .addField("☀️ Hőm️érséklet °C/°F", `${data.main.temp} °C/${Math.round((data.main.temp * (9/5) + 32)*100)/100} °F`)
                     .addField("🌡️ Minimum hőmérséklet °C/°F", `${data.main.temp_min} °C/${Math.round((data.main.temp_min * (9/5) + 32)*100)/100} °F`,true)
                     .addField("🌡️ Maximum hőmérséklet °C/°F", `${data.main.temp_max} °C/${Math.round((data.main.temp_max * (9/5) + 32)*100)/100} °F`,true)
@@ -119,13 +135,13 @@ module.exports.run = async (bot, message, args) => {
             }
             else if(response.statusCode === 404){
                 message.channel.send(new Discord.RichEmbed()
-                    .setColor("#72bac1")
+                    .setColor("#DABC12")
                     .setTitle("Időjárás")
                     .addField("Hiba","Nem volt találat!"));
             }
             else{
                 message.channel.send(new Discord.RichEmbed()
-                    .setColor("#72bac1")
+                    .setColor("#DABC12")
                     .setTitle("Időjárás")
                     .addField("Hiba","Hiba történt a szerverrel való kommunikációval!"));
             }

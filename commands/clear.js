@@ -3,13 +3,13 @@ const Discord = require("discord.js");
 module.exports.run = async (bot, message, args) => {
 
   if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(new Discord.RichEmbed()
-    .setColor("#FFFFFF")
+    .setColor("#DABC12")
     .addField("Hiba!", "Nincs jogod üzeneteket törölni!"));
   if (!args[0]) return message.channel.send(new Discord.RichEmbed()
-    .setColor("#FFFFFF")
+    .setColor("#DABC12")
     .addField("Hiba!", "Használat: -clear <üzenetek_száma>"));
   if (args[0] > 500) return message.channel.send(new Discord.RichEmbed()
-    .setColor("#FFFFFF")
+    .setColor("#DABC12")
     .addField("Hiba!", "Max 500 üzenetet törölhetsz!"));
   try {
       message.channel.bulkDelete(args[0]).then(() => {

@@ -17,7 +17,7 @@ module.exports.run = async(bot, message, args) => {
         let obj = JSON.parse(data)[0];
         let osuEmbed = new Discord.RichEmbed()
             .setAuthor(`${obj.username}'s osu profile`, `https://a.ppy.sh/${obj.user_id}`, `https://osu.ppy.sh/users/${obj.user_id}`)
-            .setColor("#ff6ae7")
+            .setColor("#DABC12")
             .setThumbnail(`https://a.ppy.sh/${obj.user_id}`)
             .addField("PP", `**Ranked:** #${obj.pp_rank} \n **Country:** #${obj.pp_country_rank} ${obj.country} \n **Raw PP:** ${obj.pp_raw}`, true)
             .addField("Map ranks:", `**SS:** ${obj.count_rank_ss} \n **S:** ${obj.count_rank_s} \n **A:** ${obj.count_rank_a}`, true)

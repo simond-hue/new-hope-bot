@@ -3,14 +3,14 @@ const Discord = require("discord.js");
 module.exports.run = async (bot, message, args) => {
     if(args[0] === undefined) return message.channel.send(new Discord.RichEmbed()
         .addField("Hiba!", "Használat -setprefix <prefix>")
-        .setColor("#CD1265"));
+        .setColor("#DABC12"));
 
     if(message.author.id!==197370398839406592 || //DEV ID-K
        message.author.id!==266553585255317505 ||
        message.author.id!==211956737027211264 ||
        message.author.id!==336471304653897728) return message.channel.send(new Discord.RichEmbed()
         .addField("Hiba!", "Csak szerver admin tudja megváltoztatni a prefixet!")
-        .setColor("#CD1265"));
+        .setColor("#DABC12"));
 
     let fs = require('fs');
 
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
       });
     message.channel.send(new Discord.RichEmbed()
         .addField("Sikeres prefix változtatás!",`A bot parancsai mostantól a **${botconfig.prefix}** előtaggal érhetőek el!`)
-        .setColor("#CD1265"));
+        .setColor("#DABC12"));
 }
 module.exports.help = {
     name: "setprefix",
