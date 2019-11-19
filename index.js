@@ -148,7 +148,7 @@ bot.on("ready", async() => {
     console.log(bot.commands);
 });
 
-bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XccJuw.GmaKCANbKrvoeK4LCKP1l9BD-pA");
+bot.login(process.env.token);
 
 exports.setServers = function setServer(server){
     return this.servers = server;
