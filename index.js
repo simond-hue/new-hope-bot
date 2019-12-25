@@ -8,7 +8,6 @@ const autoanime = require('./autoAnime.json');
 bot.commands = new Discord.Collection();
 bot.type = new Discord.Collection();
 servers = {};
-var VoltLejatszvaZene = false;
 
 //szólánchoz
 const wordch = require("./wordchain.js");
@@ -93,24 +92,70 @@ bot.on("message", async message => {
     }
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if (botconfig.prefix === cmd.slice(0, prefix.length)) {
-        if (commandfile && commandfile.type !== 'auto') commandfile.run(bot, message, args);
-        else{
-            bot.commands.forEach(element => {
-                if(element.help.alias){
-                    var i = 0;
-                    while(i<element.help.alias.length){
-                        if(element.help.alias[i] === cmd.slice(prefix.length)){
-                            element.run(bot,message,args);
-                            break;
+        log(message);
+        try{
+            if (commandfile && commandfile.type !== 'auto') commandfile.run(bot, message, args);
+            else{
+                bot.commands.forEach(element => {
+                    if(element.help.alias){
+                        var i = 0;
+                        while(i<element.help.alias.length){
+                            if(element.help.alias[i] === cmd.slice(prefix.length)){
+                                element.run(bot,message,args);
+                                break;
+                            }
+                            i++;
                         }
-                        i++;
                     }
-                }
-            });
+                });
+            }
+        }
+        catch(err){
+            if(err){
+                errlog(err);
+            }
         }
     }
 
 });
+
+function log(message){
+    now = new Date();
+    string = fs.readFileSync("./log.txt");
+    string += "[" + now.getFullYear() + "-" + now.getMonth() + "-" + now.getDay()+ " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
+    string += " " + message.author.username + ": " + message.content + "\n";
+    fs.writeFileSync("./log.txt", string);
+}
+
+function errlog(err){
+    string = fs.readFileSync("./log.txt");
+    string += err;
+    fs.writeFileSync("./log.txt",string);
+}
+
+function loopAutoHentai(){
+    timeH = Math.floor(Math.random() * (3600000 - 1800000) + 1800000);
+    setTimeout(() => {
+        if(autohentai){
+            for(var attributum in autohentai){
+                bot.commands.get('autohentai').run(bot,autohentai[attributum].channel);
+            }
+            loopAutoHentai();
+        }
+    }, timeH);
+}
+
+function loopAutoAnime(){
+    timeA = Math.floor(Math.random() * (3600000 - 1800000) + 1800000);
+    setTimeout(() => {
+        if(autoanime){
+            for(var attributum in autoanime){
+                bot.commands.get('autoanime').run(bot,autoanime[attributum].channel);
+            }
+            loopAutoAnime();
+        }
+    }, timeA);
+}
 
 bot.on("ready", async() => {
     console.log(`${bot.user.username} is online on ${bot.guilds.size} servers!`);
@@ -125,50 +170,14 @@ bot.on("ready", async() => {
     } else {
         bot.user.setActivity(botconfig.activity, { type: botconfig.activity_type });
     }
-    //autohentai és autoanime
-    timeH = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
-    setInterval(() => {
-        timeH = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
-        if(autohentai){
-            for(var attributum in autohentai){
-                bot.commands.get('autohentai').run(bot,autohentai[attributum].channel);
-            }
-        }
-    }, timeH);
-    timeA = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
-    setInterval(() => {
-        timeA = Math.floor(Math.random() * (7200000 - 3600000) + 3600000);
-        if(autoanime){
-            for(var attributum in autoanime){
-                bot.commands.get('autoanime').run(bot,autoanime[attributum].channel);
-            }
-        }
-    }, timeA);
-    //done
+
+    loopAutoHentai();
+    
+    loopAutoAnime();
+
     console.log(bot.commands);
 });
 
-bot.login(process.env.token);
-
-exports.setServers = function setServer(server){
-    return this.servers = server;
-}
-
-exports.getServers = function getServers(){
-    if(this.servers === undefined){
-        return {};
-    }
-    else{
-        return this.servers;
-    }
-}
+bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XdPYfg.d_6--U-ezGPg-58HqBh3-521pZs");
 
 exports.servers = servers;
-
-exports.setVoltLejatszvaZene = function setVoltLejatszvaZene(value){
-    return this.VoltLejatszvaZene = value;
-}
-
-exports.getVoltLejatszvaZene = function getVoltLejatszvaZene(){
-    return this.VoltLejatszvaZene;
-}

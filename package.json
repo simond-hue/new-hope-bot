@@ -18,15 +18,29 @@
   },
   "homepage": "https://github.com/simond-hue/new-hope-bot#readme",
   "dependencies": {
+    "assert-diff": "^2.0.3",
     "discord.js": "^11.5.1",
+    "https-proxy-agent": "^4.0.0",
     "iconv": "^2.3.5",
     "libsodium-wrappers": "^0.7.6",
+    "m3u8stream": "^0.6.3",
+    "miniget": "^1.6.1",
+    "mocha": "^6.2.2",
+    "muk-prop": "^1.2.1",
+    "nyc": "^15.0.0",
     "opusscript": "0.0.7",
+    "querystring": "^0.2.0",
     "request": "^2.88.0",
     "ripple-node": "^1.0.5",
-    "ytdl-core": "^1.0.0"
+    "sax": "^1.2.4",
+    "sinon": "^8.0.1",
+    "url": "^0.11.0",
+    "util": "^0.12.1",
+    "uws": "^100.0.1",
+    "ytdl-core": "^1.0.5"
   },
   "devDependencies": {
+    "@types/node": "^13.1.0",
     "nodemon": "^1.19.2"
   }
 }

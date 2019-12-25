@@ -1,9 +1,6 @@
 const Discord = require("discord.js");
 const fs = require('fs');
 var index = require("../index.js");
-var timer;
-var channelid;
-var channelConnection;
 
 module.exports.run = async (bot, message, args) => {
     if(!message.member.voiceChannel){
@@ -27,19 +24,31 @@ module.exports.run = async (bot, message, args) => {
                 });
                 if(botok){
                     connection.disconnect();
-                    servers = index.getServers();
+                    servers = index.servers;
                     if(servers[message.guild.id]){
                         delete servers[message.guild.id];
-                        index.setServers(servers);
+                        index.servers = servers;
                     }
                 }
-            }, 300000);
+            }, 600000);
             await message.member.voiceChannel.join();
-            this.channelid = message.member.voiceChannel.id;
-            this.channelConnection = message.guild.voiceConnection;
-            index.setVoltLejatszvaZene(false);
-            this.timer = setTimeout(() => {
-                if(!index.getVoltLejatszvaZene() && message.member.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
+            servers = index.servers;
+            if(!servers[message.guild.id]){
+                servers[message.guild.id] = {
+                    queue: [],
+                    information: [],
+                    requestedBy: [],
+                    requestedByProfPic: [],
+                    skips: 0,
+                    skippedBy: [],
+                    summonedChannel: message.member.voiceChannel.id,
+                    summonedVoiceConnection: message.guild.voiceConnection,
+                    voltLejatszvaZene: false,
+                    page: 0
+                };
+            }
+            setTimeout(() => {
+                if(!servers[message.guild.id].voltLejatszvaZene && message.member.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
             }, 300000);
         }
     }
@@ -50,6 +59,3 @@ module.exports.help = {
     alias: ["connect", "join"]
 }
 
-module.exports.channelid = this.channelid;
-
-module.exports.channelConnection = this.channelConnection;

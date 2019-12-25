@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const play = require("./play.js");
 const index = require("../index.js");
+const summon = require('./summon.js');
 
 async function skip(msg,bt){
     server = index.servers[msg.guild.id];
@@ -20,30 +21,40 @@ function countOfNonBots(map){
 }
 
 module.exports.run = async (bot, message, args) => {
+    server = index.servers[message.guild.id];
     if(!message.member.voiceChannel) return message.channel.send(new Discord.RichEmbed()
-                                                                .setColor("#DABC12")
-                                                                .setTitle("Voice channelben kell lenned, hogy tudj számot ugrani!"));
-    server = index.getServers()[message.guild.id];
-    if(!server.skippedBy.includes(message.member.id)){
-        server.skips++;
-        server.skippedBy.push(message.member.id);
-    }
-    nonBots = countOfNonBots(message.member.voiceChannel.members);
-    if((server.skips >= Math.floor(nonBots/2) || message.member.hasPermission('ADMINISTRATOR')) && server.queue[0]){
-        message.channel.send(new Discord.RichEmbed()
-            .setColor("#DABC12")
-            .setTitle("Ugrás..."));
-        skip(message,bot);
+                                                .setColor("#DABC12")
+                                                .setTitle("Voice channelben kell lenned, hogy tudj számot ugrani!"));
+    if(server.summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
+        if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
+            server.summonedChannel = message.member.voiceChannel.id;
+    if(server.summonedChannel === message.member.voiceChannel.id){
+        if(!server.skippedBy.includes(message.member.id)){
+            server.skips++;
+            server.skippedBy.push(message.member.id);
+        }
+        nonBots = countOfNonBots(message.member.voiceChannel.members);
+        if((server.skips >= Math.floor(nonBots/2) || message.member.hasPermission('ADMINISTRATOR')) && server.queue[0]){
+            message.channel.send(new Discord.RichEmbed()
+                .setColor("#DABC12")
+                .setTitle("Ugrás..."));
+            skip(message,bot);
+        }
+        else{
+            return message.channel.send(new Discord.RichEmbed()
+                .setColor("#DABC12")
+                .setTitle(`Ugrás ${server.skips}\\${Math.floor(nonBots/2)}`));
+        }
+        if(!server.queue[0]){
+            return message.channel.send(new Discord.RichEmbed()
+                .setColor("#DABC12")
+                .setTitle("Nincs több elem a lejátszási listában!"));
+        }
     }
     else{
         return message.channel.send(new Discord.RichEmbed()
-            .setColor("#DABC12")
-            .setTitle(`Ugrás ${server.skips}\\${Math.floor(nonBots/2)}`));
-    }
-    if(!server.queue[0]){
-        return message.channel.send(new Discord.RichEmbed()
-            .setColor("#DABC12")
-            .setTitle("Nincs több elem a lejátszási listában!"));
+                .setColor("#DABC12")
+                .setTitle("Nem vagyunk ugyanabban a szobában!"));
     }
 }
 

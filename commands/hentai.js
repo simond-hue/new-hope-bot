@@ -12,6 +12,8 @@ module.exports.run = async (bot, message, args) => {
                     let count = Object.keys(data).length;
                     if(count > 0){
                         return message.channel.send(new Discord.RichEmbed()
+                            .setTitle('Ha nem töltene be a kép')
+                            .setURL(data[0].file_url)
                             .setImage(data[0].file_url)
                             .setColor('#DABC12'));
                     }
@@ -41,6 +43,8 @@ module.exports.run = async (bot, message, args) => {
                     let count = Object.keys(data).length;
                     if(count > 0){
                         return message.channel.send(new Discord.RichEmbed()
+                            .setTitle('Ha nem töltene be a kép')
+                            .setURL(data[0].file_url)
                             .setImage(data[0].sample_url)
                             .setColor('#DABC12'));
                     }

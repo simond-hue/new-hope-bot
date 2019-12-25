@@ -39,8 +39,8 @@ module.exports.run = async (bot, message, args) => {
                         .then(() => {
                             const collector = lastMessage.createReactionCollector((reaction, user) => 
                             user.id === message.author.id &&
-                            reaction.emoji.name === "👌" ||
-                            reaction.emoji.name === "❌"
+                            (reaction.emoji.name === "👌" ||
+                            reaction.emoji.name === "❌")
                             ,{ time: 30000 }).once("collect", async(reaction) => {
                                 const chosen = reaction.emoji.name;
                                 if(chosen === "👌"){
@@ -51,6 +51,7 @@ module.exports.run = async (bot, message, args) => {
                                                 await message.guild.createRole({
                                                     name: `USER-${message.member.id}`,
                                                     color: argsSplitSpace,
+                                                    permissions: []
                                                 })
                                                 .then(async(role) => {
                                                     message.member.addRole(role);
@@ -68,6 +69,7 @@ module.exports.run = async (bot, message, args) => {
                                                 await message.guild.createRole({
                                                     name: `USER-${message.member.id}`,
                                                     color: argsSplitSpace,
+                                                    permissions: []
                                                 })
                                                 .then(async(role) => {
                                                     message.member.addRole(role);
