@@ -178,6 +178,6 @@ bot.on("ready", async() => {
     console.log(bot.commands);
 });
 
-bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XdPYfg.d_6--U-ezGPg-58HqBh3-521pZs");
+bot.login(process.env.token);
 
 exports.servers = servers;
