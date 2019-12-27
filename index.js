@@ -122,7 +122,7 @@ bot.on("message", async message => {
 function log(message){
     now = new Date();
     string = fs.readFileSync("./log.txt");
-    string += "[" + now.getFullYear() + "-" + now.getMonth() + "-" + now.getDay()+ " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
+    string += "[" + now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate()+ " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
     string += " " + message.author.username + ": " + message.content + "\n";
     fs.writeFileSync("./log.txt", string);
 }
@@ -178,6 +178,6 @@ bot.on("ready", async() => {
     console.log(bot.commands);
 });
 
-bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XdPYfg.d_6--U-ezGPg-58HqBh3-521pZs");
+bot.login(/*process.env.token*/"NjI2NTI3NDQ4ODU4ODg2MTg0.XgPFfg.Ziq5n35SoM6plZCXlJ50zO29FHQ");
 
 exports.servers = servers;

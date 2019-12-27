@@ -142,7 +142,7 @@ module.exports.run = async (bot, message, args) =>{
     server = index.servers[message.guild.id];
     if(!message.guild.voiceConnection)                      return message.channel.send(new Discord.RichEmbed()
                                                                 .setColor("#DABC12")
-                                                                .setTitle('Nem vagyok voice channelen'));
+                                                                .setTitle('Nem vagyok voice channelen!'));
     if(!server.queue[0] && message.guild.voiceConnection)   return message.channel.send(new Discord.RichEmbed()
                                                                 .setColor("#DABC12")
                                                                 .setTitle('Üres a lejátszási lista!'));

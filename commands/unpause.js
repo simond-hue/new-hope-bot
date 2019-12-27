@@ -1,0 +1,27 @@
+const Discord = require("discord.js");
+const index = require("../index.js");
+var pause = require("./pause.js");
+
+function giveError(message, msg){
+    return message.channel.send(new Discord.RichEmbed().setColor('#DABC12').setTitle(msg));
+}
+
+module.exports.run = async (bot, message, args) => {
+    if(!message.guild.voiceConnection) return giveError(message, 'Nem vagyok voice channelen!');
+    if(!message.member.voiceChannel) return giveError(message, 'Voice channelben kell lenned, hogy meg tudd állíani a zenelejátszót!');
+    let server = index.servers[message.guild.id];
+    if(server.summonedChannel !== message.member.voiceChannel.id) return giveError(message, 'Nem vagyunk ugyanabban a szobában!');
+    if(!server.dispatcher) return giveError(message, 'Nincs zene a lejátszóban!');
+    if(!server.dispatcher.paused) return giveError(message, 'A zene nem lett korábban megállítva!');
+
+    server.dispatcher.resume();
+    console.log(pause.pauseTimeout)
+    clearTimeout(server.pauseTimeout);
+    console.log(pause.pauseTimeout)
+    return giveError(message, 'Folytatás...');
+}
+module.exports.help = {
+    name: "unpause",
+    type: "music",
+    alias: ['resume', 'r']
+}

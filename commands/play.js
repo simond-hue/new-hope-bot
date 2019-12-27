@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
-const fs = require('fs');
-const summon = require('./summon.js');
 const request = require('request');
 var index = require("../index.js");
 
@@ -33,7 +31,7 @@ var functionInPlay = async function (msg,bt,ar){
                     .setTitle('Üres a lejátszási lista!'));
                 server.dispatcher = null;
                 if(msg.guild.voiceConnection){
-                    setTimeout(()=>{
+                    server.playTimeout = setTimeout(()=>{
                         if(msg.guild.voiceConnection && !server.queue[0]) return bt.commands.get("fuckoff").run(bt,msg,ar);
                     },300000);
                 }
@@ -93,6 +91,7 @@ var functionInPlay = async function (msg,bt,ar){
         }
         server.dispatcher.on('start', ()=> {
             msg.guild.voiceConnection.player.streamingData.pausedTime = 0;
+            clearTimeout(server.playTimeout);
         });
         server.dispatcher.on("end", ()=>{
             server.dispatcher.end();
@@ -115,7 +114,7 @@ var functionInPlay = async function (msg,bt,ar){
                         .setTitle('Üres a lejátszási lista!'));
                     server.dispatcher = null;
                     if(msg.guild.voiceConnection){
-                        setTimeout(()=>{
+                        server.playTimeout = setTimeout(()=>{
                             if(msg.guild.voiceConnection && !server.queue[0]) return bt.commands.get("fuckoff").run(bt,msg,ar);
                         },300000);
                     }
@@ -308,7 +307,7 @@ module.exports.run = async (bot, message, args) => {
                 if(message.content.split(' ').length > 2){
                     return message.channel.send(new Discord.RichEmbed()
                         .setColor("#DABC12")
-                        .addField("Hiba!","Az argumentum több elemet tartalmaz!"));
+                        .setTitle("Az argumentum több elemet tartalmaz!"));
                 }
                 var vidID;
                 if(link.startsWith("https://www.youtube.com/watch?")) vidID = link.split("?")[1].split('&')[0].substr(2);
@@ -345,7 +344,7 @@ module.exports.run = async (bot, message, args) => {
                                         .setTitle('Üres a lejátszási lista!'));
                                         servers[message.guild.id].dispatcher = null;
                                     if(message.guild.voiceConnection){
-                                        setTimeout(()=>{
+                                        server.playTimeout = setTimeout(()=>{
                                             if(message.guild.voiceConnection && !servers[message.guild.id].queue[0]) return bot.commands.get("fuckoff").run(bot,message,args);
                                         },300000);
                                     }
@@ -409,7 +408,7 @@ module.exports.run = async (bot, message, args) => {
                                                 .setTitle('Üres a lejátszási lista!'));
                                                 servers[message.guild.id].dispatcher = null;
                                             if(message.guild.voiceConnection){
-                                                setTimeout(()=>{
+                                                server.playTimeout = setTimeout(()=>{
                                                     if(message.guild.voiceConnection && !servers[message.guild.id].queue[0]) return bot.commands.get("fuckoff").run(bot,message,args);
                                                 },300000);
                                             }

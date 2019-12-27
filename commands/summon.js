@@ -48,7 +48,8 @@ module.exports.run = async (bot, message, args) => {
                 };
             }
             setTimeout(() => {
-                if(!servers[message.guild.id].voltLejatszvaZene && message.member.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
+                if(servers[message.guild.id])
+                    if(!servers[message.guild.id].voltLejatszvaZene && message.member.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
             }, 300000);
         }
     }
