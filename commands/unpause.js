@@ -15,9 +15,7 @@ module.exports.run = async (bot, message, args) => {
     if(!server.dispatcher.paused) return giveError(message, 'A zene nem lett korábban megállítva!');
 
     server.dispatcher.resume();
-    console.log(pause.pauseTimeout)
     clearTimeout(server.pauseTimeout);
-    console.log(pause.pauseTimeout)
     return giveError(message, 'Folytatás...');
 }
 module.exports.help = {

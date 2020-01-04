@@ -44,7 +44,10 @@ module.exports.run = async (bot, message, args) => {
                     summonedChannel: message.member.voiceChannel.id,
                     summonedVoiceConnection: message.guild.voiceConnection,
                     voltLejatszvaZene: false,
-                    page: 0
+                    page: 0,
+                    queueCanBeCalled: true,
+                    looped: false,
+                    shuffled: false
                 };
             }
             setTimeout(() => {

@@ -33,12 +33,12 @@ async function listingCommand(server, message){
         await message.channel.fetchMessages({ limit: 1 }).then(async(messages) => {
             server.lastMessage = messages.first();
             if(server.queue.length<=10) return;
-            const collector = server.lastMessage.createReactionCollector((reaction, user) =>
+            const collector = await server.lastMessage.createReactionCollector((reaction, user) =>
                 user.id !== message.guild.me.id &&
                 (reaction.emoji.name === "⬅️" ||
-                reaction.emoji.name === "➡️" ||
-                reaction.emoji.name === "⏩" ||
-                reaction.emoji.name === "⏪")
+                 reaction.emoji.name === "➡️" ||
+                 reaction.emoji.name === "⏩" ||
+                 reaction.emoji.name === "⏪")
             ,{ time: timeT });
             server.reactionCollectorOnLastMessage = collector;
             collector.once("collect", async(reaction) => {
@@ -53,13 +53,14 @@ async function listingCommand(server, message){
                             server.page = Math.floor(server.queue.length/10);    
                         break;
                 }
-                server.lastMessage.clearReactions();
+                await server.lastMessage.clearReactions();
+                await server.lastMessage.delete();
                 return listingCommand(server,message);
             });
             if((server.page*10)+(server.queue.length%10) === server.queue.length || (Math.floor(server.queue.length/10) === server.queue.length/10 && server.page!=0)){
                 try{
-                    await server.lastMessage.react('⏪');
-                    await server.lastMessage.react('⬅️');
+                    if(server.lastMessage) await server.lastMessage.react('⏪');
+                    if(server.lastMessage) await server.lastMessage.react('⬅️');
                 }
                 catch(err){ 
                     if(err.code !== 10008) console.log(err) 
@@ -67,8 +68,8 @@ async function listingCommand(server, message){
             }
             else if(server.page === 0 && (server.page*10)+(server.queue.length%10) !== server.queue.length){
                 try{
-                    await server.lastMessage.react('➡️');
-                    await server.lastMessage.react('⏩');
+                    if(server.lastMessage) await server.lastMessage.react('➡️');
+                    if(server.lastMessage) await server.lastMessage.react('⏩');
                 }
                 catch(err){ 
                     if(err.code !== 10008) console.log(err)  
@@ -76,10 +77,10 @@ async function listingCommand(server, message){
             }
             else{
                 try{
-                    await server.lastMessage.react('⏪');
-                    await server.lastMessage.react('⬅️');
-                    await server.lastMessage.react('➡️');
-                    await server.lastMessage.react('⏩');
+                    if(server.lastMessage) await server.lastMessage.react('⏪');
+                    if(server.lastMessage) await server.lastMessage.react('⬅️');
+                    if(server.lastMessage) await server.lastMessage.react('➡️');
+                    if(server.lastMessage) await server.lastMessage.react('⏩');
                 }
                 catch(err){ 
                     if(err.code !== 10008) console.log(err)  
@@ -135,7 +136,10 @@ async function listing(server, message){
             }
         }
     });
-    return message.channel.send(queueEmbed);
+    await message.channel.send(queueEmbed);
+    await message.channel.fetchMessages({ limit: 1 }).then(async(messages) => {
+        server.lastMessage = messages.first();
+    });
 }
 
 module.exports.run = async (bot, message, args) =>{
@@ -151,8 +155,10 @@ module.exports.run = async (bot, message, args) =>{
                                                                 .setTitle('Szükségem van üzenet kezelési jogra!'));
     if(!server.queueCanBeCalled) return message.channel.send(new Discord.RichEmbed()
                                     .setColor("#DABC12")
-                                    .setTitle('A lejátszási list még töltődik!'));  
-    server.page = 0;
+                                    .setTitle('A lejátszási lista még töltődik!'));
+    if(server.shuffled) server.page = Math.floor(server.shuffleind/10);
+    else server.page = 0;
+    if(server.lastMessage && server.reactionCollectorOnLastMessage) server.lastMessage.clearReactions();
     listingCommand(server,message);
 
 }

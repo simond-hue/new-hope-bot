@@ -7,6 +7,7 @@ async function skip(msg,bt){
     server = index.servers[msg.guild.id];
     server.skip = 0;
     server.skippedBy = [];
+    server.looped = false;
     new Promise((resolve,reject)=>{
         resolve(server.dispatcher.end());
     });

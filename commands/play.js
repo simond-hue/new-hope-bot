@@ -2,16 +2,16 @@ const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
 const request = require('request');
 var index = require("../index.js");
-
+/*
 const Agent = require('https-proxy-agent');
 const host = '109.251.197.33';
 const port = '49046';
 const proxy = 'http://' + host + ':' +  port;
 const agent = new Agent(proxy);
-
+*/
 var functionInPlay = async function (msg,bt,ar){
     server = index.servers[msg.guild.id];
-    if(!server.information[0]){
+    if(!server.information[server.shuffleind]){
         if(server && msg.guild.voiceConnection){
             msg.channel.send(new Discord.RichEmbed()
                     .setColor('#DABC12')
@@ -22,7 +22,7 @@ var functionInPlay = async function (msg,bt,ar){
             server.information.shift();
             server.requestedBy.shift();
             server.requestedByProfPic.shift();
-            if(server.queue[0]){
+            if(server.queue[server.shuffleind]){
                 return play(msg, bt);
             }
             else{
@@ -32,7 +32,7 @@ var functionInPlay = async function (msg,bt,ar){
                 server.dispatcher = null;
                 if(msg.guild.voiceConnection){
                     server.playTimeout = setTimeout(()=>{
-                        if(msg.guild.voiceConnection && !server.queue[0]) return bt.commands.get("fuckoff").run(bt,msg,ar);
+                        if(msg.guild.voiceConnection && !server.queue[server.shuffleind]) return bt.commands.get("fuckoff").run(bt,msg,ar);
                     },300000);
                 }
             }
@@ -40,10 +40,10 @@ var functionInPlay = async function (msg,bt,ar){
     }
     else{
         var stream;
-        if(server.information[0].player_response.videoDetails.isLiveContent){
+        if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent){
             await new Promise((resolve, reject)=>{
-                const format = ytdl.chooseFormat(server.information[0].formats, { quality: [128,127,120,96,95,94,93] , filter: "audioonly", highWaterMark: 1<<25});
-                stream = ytdl.downloadFromInfo(server.information[0], format);
+                const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,96,95,94,93] , filter: "audioonly", highWaterMark: 1<<25});
+                stream = ytdl.downloadFromInfo(server.information[server.shuffleind], format);
                 resolve(stream);
             }).then(async()=>{
                 if(msg.guild.voiceConnection){
@@ -51,13 +51,13 @@ var functionInPlay = async function (msg,bt,ar){
                     msg.channel.send(new Discord.RichEmbed()
                     .setColor("#DABC12")
                     .setTitle("Jelenlegi zeneszám")
-                    .setURL(server.queue[0])
-                    .setDescription(servers[msg.guild.id].information[0].title)
+                    .setURL(server.queue[server.shuffleind])
+                    .setDescription(servers[msg.guild.id].information[server.shuffleind].title)
                     .setFooter(
-                        `Kérte: ${server.requestedBy[0]}`,
-                        server.requestedByProfPic[0]
+                        `Kérte: ${server.requestedBy[server.shuffleind]}`,
+                        server.requestedByProfPic[server.shuffleind]
                     )
-                    .setThumbnail(server.information[0].player_response.videoDetails.thumbnail.thumbnails[0].url)
+                    .setThumbnail(server.information[server.shuffleind].player_response.videoDetails.thumbnail.thumbnails[0].url)
                     .setAuthor(
                         "New Hope Bot",
                         "https://cdn.discordapp.com/avatars/626527448858886184/9c28e993dc55dd11fe6e0daf5e4c351b.png"
@@ -67,7 +67,7 @@ var functionInPlay = async function (msg,bt,ar){
         }
         else{
             await new Promise((resolve, reject)=>{
-                stream = ytdl.downloadFromInfo(server.information[0], {filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1<<25});
+                stream = ytdl.downloadFromInfo(server.information[server.shuffleind], {filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1<<25});
                 resolve(stream);
             }).then(async()=>{
                 if(msg.guild.voiceConnection){
@@ -75,13 +75,13 @@ var functionInPlay = async function (msg,bt,ar){
                     msg.channel.send(new Discord.RichEmbed()
                         .setColor("#DABC12")
                         .setTitle("Jelenlegi zeneszám")
-                        .setURL(server.queue[0])
-                        .setDescription(servers[msg.guild.id].information[0].title)
+                        .setURL(server.queue[server.shuffleind])
+                        .setDescription(servers[msg.guild.id].information[server.shuffleind].title)
                         .setFooter(
-                            `Kérte: ${server.requestedBy[0]}`,
-                            server.requestedByProfPic[0]
+                            `Kérte: ${server.requestedBy[server.shuffleind]}`,
+                            server.requestedByProfPic[server.shuffleind]
                         )
-                        .setThumbnail(server.information[0].player_response.videoDetails.thumbnail.thumbnails[0].url)
+                        .setThumbnail(server.information[server.shuffleind].player_response.videoDetails.thumbnail.thumbnails[0].url)
                         .setAuthor(
                             "New Hope Bot",
                             "https://cdn.discordapp.com/avatars/626527448858886184/9c28e993dc55dd11fe6e0daf5e4c351b.png"
@@ -99,13 +99,16 @@ var functionInPlay = async function (msg,bt,ar){
             if(msg.guild.voiceConnection && server){
                 server.skips = 0;
                 server.skippedBy = [];
-                server.queue.shift();
-                server.information.shift();
-                server.requestedBy.shift();
-                server.requestedByProfPic.shift();
+                if(!server.looped && !server.shuffled){
+                    server.queue.shift();
+                    server.information.shift();
+                    server.requestedBy.shift();
+                    server.requestedByProfPic.shift();
+                }
+                if(server.shuffled) server.shuffleind = Math.floor(Math.random() * (server.queue.length));
                 if(server.lastMessage) server.lastMessage.clearReactions();
                 if(server.reactionCollectorOnLastMessage) server.reactionCollectorOnLastMessage.stop();
-                if(server.queue[0]){
+                if(server.queue[server.shuffleind]){
                     return play(msg, bt);
                 }
                 else{
@@ -115,7 +118,7 @@ var functionInPlay = async function (msg,bt,ar){
                     server.dispatcher = null;
                     if(msg.guild.voiceConnection){
                         server.playTimeout = setTimeout(()=>{
-                            if(msg.guild.voiceConnection && !server.queue[0]) return bt.commands.get("fuckoff").run(bt,msg,ar);
+                            if(msg.guild.voiceConnection && !server.queue[server.shuffleind]) return bt.commands.get("fuckoff").run(bt,msg,ar);
                         },300000);
                     }
                 }
@@ -129,18 +132,17 @@ var functionInPlay = async function (msg,bt,ar){
 var play = async function (msg, bt, ar){
     server = index.servers[msg.guild.id];
     if(!server.voltLejatszvaZene) server.voltLejatszvaZene = true;
-    if(server.information[0] === null && server.queue[0] && msg.guild.voiceConnection){
+    if(server.information[server.shuffleind] === null && server.queue[server.shuffleind] && msg.guild.voiceConnection){
         await new Promise((resolve, reject)=>{
-            ytdl.getInfo(server.queue[0], async(err,info)=>{
-                server.information.pop();
+            ytdl.getInfo(server.queue[server.shuffleind], async(err,info)=>{
                 resolve(info);
-                server.information.unshift(info);
+                server.information[server.shuffleind] = info;
             });
         }).then(async()=>{
             functionInPlay(msg,bt,ar);
         });
     }
-    else if(server.information[0] && server.queue[0] && msg.guild.voiceConnection){
+    else if(server.information[server.shuffleind] && server.queue[server.shuffleind] && msg.guild.voiceConnection){
         functionInPlay(msg,bt,ar);
     }
 }
@@ -155,23 +157,6 @@ var playlistRequest = async function (url, page, msg, bt, ar){
             if(!msg.guild.voiceConnection) await bt.commands.get("summon").run(bt,msg,ar);
             server = index.servers[msg.guild.id];
             server.queueCanBeCalled = false;
-            if(!server.loadingcounter) {
-                server.loadingcounter=0;
-                await msg.channel.send('*Lejátszási lista betöltése.*');
-            }
-            if(!server.loadingmsg){
-                await msg.channel.fetchMessages({ limit: 1 }).then(async(messages) => {
-                    server.loadingmsg = messages.first();
-                });
-            }
-            switch(server.loadingcounter%3){
-                case 0:
-                    server.loadingmsg.edit("*Lejátszási lista betöltése.*");     break;
-                case 1:
-                    server.loadingmsg.edit("*Lejátszási lista betöltése..*");    break;
-                case 2:
-                    server.loadingmsg.edit("*Lejátszási lista betöltése...*");   break;
-            }
             data = JSON.parse(response.body);
             if(!data.prevPageToken) msg.channel.send(new Discord.RichEmbed()
                                                     .setColor('#DABC12')
@@ -185,15 +170,9 @@ var playlistRequest = async function (url, page, msg, bt, ar){
             if(!url.includes('&pageToken='+page) && !server.dispatcher) play(msg,bt,ar);
             if(data.nextPageToken){
                 playlistRequest(newUrl+"&pageToken="+data.nextPageToken,data.nextPageToken,msg,bt,ar);
-                server.loadingcounter++;
             }
             else{
                 server.queueCanBeCalled = true;
-                if(server.loadingcounter) delete server.loadingcounter;
-                if(server.loadingmsg){
-                    server.loadingmsg.delete();
-                    delete server.loadingmsg;
-                }
             }
         }
         else if(response.statusCode === 404){
@@ -285,7 +264,10 @@ module.exports.run = async (bot, message, args) => {
                     summonedVoiceConnection: message.guild.voiceConnection,
                     voltLejatszvaZene: false,
                     page: 0,
-                    queueCanBeCalled: true
+                    queueCanBeCalled: true,
+                    looped: false,
+                    shuffled: false,
+                    shuffleind: 0
                 };
             }
         }
@@ -310,7 +292,7 @@ module.exports.run = async (bot, message, args) => {
                         .setTitle("Az argumentum több elemet tartalmaz!"));
                 }
                 var vidID;
-                if(link.startsWith("https://www.youtube.com/watch?")) vidID = link.split("?")[1].split('&')[0].substr(2);
+                if(link.startsWith("https://www.youtube.com/watch?")) vidID = link.split("?")[1].split('&')[servers[message.guild.id].shuffleind].substr(2);
                 else if(link.startsWith("https://youtu.be/")) vidID = link.split('/')[3];
                 if(vidID.match(/[a-zA-Z0-9_-]{11}/g)){ //HA video id formátum változna, át kellesz majd írni
                     if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
@@ -326,7 +308,7 @@ module.exports.run = async (bot, message, args) => {
                         });
                     })
                     .then(()=>{
-                        if(servers[message.guild.id].information[0]) afterPromise(message,bot,args,link);
+                        if(servers[message.guild.id].information[servers[message.guild.id].shuffleind]) afterPromise(message,bot,args,link);
                         else{
                             if(servers[message.guild.id] && message.guild.voiceConnection){
                                 servers[message.guild.id].skips = 0;
@@ -335,7 +317,7 @@ module.exports.run = async (bot, message, args) => {
                                 servers[message.guild.id].information.shift();
                                 servers[message.guild.id].requestedBy.shift();
                                 servers[message.guild.id].requestedByProfPic.shift();
-                                if(servers[message.guild.id].queue[0]){
+                                if(servers[message.guild.id].queue[server.shuffleind]){
                                     return play(message, bot);
                                 }
                                 else{
@@ -345,7 +327,7 @@ module.exports.run = async (bot, message, args) => {
                                         servers[message.guild.id].dispatcher = null;
                                     if(message.guild.voiceConnection){
                                         server.playTimeout = setTimeout(()=>{
-                                            if(message.guild.voiceConnection && !servers[message.guild.id].queue[0]) return bot.commands.get("fuckoff").run(bot,message,args);
+                                            if(message.guild.voiceConnection && !servers[message.guild.id].queue[server.shuffleind]) return bot.commands.get("fuckoff").run(bot,message,args);
                                         },300000);
                                     }
                                 }
@@ -376,7 +358,7 @@ module.exports.run = async (bot, message, args) => {
                             let count = Object.keys(data.items).length;
                             if(count>0){
                                 if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
-                                let vidID = data.items[0].id.videoId;
+                                let vidID = data.items[server.shuffleind].id.videoId;
                                 index = require("../index.js");
                                 servers = index.servers;
                                 servers[message.guild.id].queue.push(`https://www.youtube.com/watch?v=${vidID}`);
@@ -399,7 +381,7 @@ module.exports.run = async (bot, message, args) => {
                                         servers[message.guild.id].information.shift();
                                         servers[message.guild.id].requestedBy.shift();
                                         servers[message.guild.id].requestedByProfPic.shift();
-                                        if(servers[message.guild.id].queue[0]){
+                                        if(servers[message.guild.id].queue[server.shuffleind]){
                                             return play(message, bot);
                                         }
                                         else{
@@ -409,7 +391,7 @@ module.exports.run = async (bot, message, args) => {
                                                 servers[message.guild.id].dispatcher = null;
                                             if(message.guild.voiceConnection){
                                                 server.playTimeout = setTimeout(()=>{
-                                                    if(message.guild.voiceConnection && !servers[message.guild.id].queue[0]) return bot.commands.get("fuckoff").run(bot,message,args);
+                                                    if(message.guild.voiceConnection && !servers[message.guild.id].queue[server.shuffleind]) return bot.commands.get("fuckoff").run(bot,message,args);
                                                 },300000);
                                             }
                                         }

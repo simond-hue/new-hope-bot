@@ -11,14 +11,20 @@ module.exports.run = async (bot,message,args) => {
     let server = index.servers[message.guild.id];
     if(server.summonedChannel !== message.member.voiceChannel.id) return giveError(message, 'Nem vagyunk ugyanabban a szobában!');
     if(!server.dispatcher) return giveError(message, 'Nincs zene a lejátszóban!');
-    if(server.shuffled) return giveError(message, 'Már be van kapcsolva a véletlenszerű lejátszás!');
+    if(!server.shuffled) return giveError(message, 'Nincs bekapcsolva a véletlenszerű lejátszás!');
 
-    server.shuffled = true;
-
-    return giveError(message, 'Véletlenszerű lejátszás!');
+    server.shuffled = false;
+    for(var i = 0; i < server.shuffleind; i++){
+        server.queue.shift();
+        server.information.shift();
+        server.requestedBy.shift();
+        server.requestedByProfPic.shift();
+    }
+    server.shuffleind = 0;
+    return giveError(message, 'Véletlenszerű lejátszás kikapcsolva!');
 }
 module.exports.help = {
-    name: "shuffle",
+    name: "unshuffle",
     type: "music",
-    alias: ['shuff', 'rp', 'randomplay']
+    alias: ['unshuff', 'urp', 'randomplay']
 }
