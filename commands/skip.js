@@ -22,10 +22,14 @@ function countOfNonBots(map){
 }
 
 module.exports.run = async (bot, message, args) => {
-    server = index.servers[message.guild.id];
+    if(!message.guild.voiceConnection) return message.channel.send(new Discord.RichEmbed()
+                                                .setColor("#DABC12")
+                                                .setTitle("Nem vagyok voice channelen!"))
+
     if(!message.member.voiceChannel) return message.channel.send(new Discord.RichEmbed()
                                                 .setColor("#DABC12")
                                                 .setTitle("Voice channelben kell lenned, hogy tudj számot ugrani!"));
+    server = index.servers[message.guild.id];
     if(server.summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
         if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
             server.summonedChannel = message.member.voiceChannel.id;
@@ -35,6 +39,11 @@ module.exports.run = async (bot, message, args) => {
             server.skippedBy.push(message.member.id);
         }
         nonBots = countOfNonBots(message.member.voiceChannel.members);
+        if(!server.queue[0]){
+            return message.channel.send(new Discord.RichEmbed()
+                .setColor("#DABC12")
+                .setTitle("Nincs több elem a lejátszási listában!"));
+        }
         if((server.skips >= Math.floor(nonBots/2) || message.member.hasPermission('ADMINISTRATOR')) && server.queue[0]){
             message.channel.send(new Discord.RichEmbed()
                 .setColor("#DABC12")
@@ -45,11 +54,6 @@ module.exports.run = async (bot, message, args) => {
             return message.channel.send(new Discord.RichEmbed()
                 .setColor("#DABC12")
                 .setTitle(`Ugrás ${server.skips}\\${Math.floor(nonBots/2)}`));
-        }
-        if(!server.queue[0]){
-            return message.channel.send(new Discord.RichEmbed()
-                .setColor("#DABC12")
-                .setTitle("Nincs több elem a lejátszási listában!"));
         }
     }
     else{

@@ -25,5 +25,5 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
     name: "pause",
     type: "music",
-    alias: ['break', 'b']
+    alias: ['break', 'b', 'stop']
 }

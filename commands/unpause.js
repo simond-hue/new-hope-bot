@@ -15,11 +15,12 @@ module.exports.run = async (bot, message, args) => {
     if(!server.dispatcher.paused) return giveError(message, 'A zene nem lett korábban megállítva!');
 
     server.dispatcher.resume();
+    message.guild.voiceConnection.player.streamingData.pausedTime = 0;
     clearTimeout(server.pauseTimeout);
     return giveError(message, 'Folytatás...');
 }
 module.exports.help = {
     name: "unpause",
     type: "music",
-    alias: ['resume', 'r']
+    alias: ['resume', 'r', 'unstop']
 }

@@ -7,16 +7,14 @@ async function error (message, msg){
 // *1 óránál hosszabbnál rossz értékeket ad vissza (ugyanez szerepel más module-ban is)
 function timeNormalization(time){
     if(time >= 3600){
-        var currentLength = time;
         hour = Math.floor(time/3600);
-        currentLength -= hour*3600;
-        if(hour < 10) hour = "0"+hour;
+        time = time-hour*3600;
+        if(hour < 10) hour = "0" + hour;
         minutes = Math.floor(time/60);
-        currentLength -= minutes*60;
-        if(minutes < 10) minutes = "0"+minutes;
-        seconds = currentLength;
-        if(seconds < 10) seconds = "0"+seconds;
-        return `${hour}:${minutes}:${seconds}`;
+        time = time-minutes*60;
+        if(minutes < 10) minutes = "0" + minutes;
+        if(time < 10) time = "0" + time;
+        return `${hour}:${minutes}:${time}`;
     }
     else{
         var currentLength = time;
@@ -29,9 +27,10 @@ function timeNormalization(time){
     }
 }
 
-function createEmbed(server,message){
+function createEmbed(server){
     embed = new Discord.RichEmbed() // richembed létrehozása
         .setTitle("Jelenlegi zeneszám")
+        .setDescription(server.information[server.shuffleind].title)
         .setURL(server.queue[server.shuffleind])
         .setColor("#DABC12")
         .setFooter(
@@ -43,29 +42,28 @@ function createEmbed(server,message){
             "New Hope Bot",
             "https://cdn.discordapp.com/avatars/626527448858886184/9c28e993dc55dd11fe6e0daf5e4c351b.png"
         );
-    currentLengthInSec = Math.floor(server.dispatcher.time/1000);
-    var display = "";
-        // százalékos kiírást 
-        // egység lesz így a jelző hossza (mivel +1 maga a jelző)
-    percantage = Math.round((currentLengthInSec / server.information[server.shuffleind].length_seconds)*100/5);
-    for(var i = 0; i < percantage;i++){ 
-        display += "⎯";
+    if(!server.information[server.shuffleind].player_response.videoDetails.isLiveContent){
+        currentLengthInSec = Math.floor(server.dispatcher.time/1000);
+        var display = "";
+            // százalékos kiírást 
+        percantage = Math.round((currentLengthInSec / server.information[server.shuffleind].length_seconds)*100/5);
+        for(var i = 0; i < percantage;i++){ 
+            display += "⎯";
+        }
+        display += "⬤";
+        for(var i = percantage; i < 20; i++){
+            if(i!==0) display += "⎯";
+        }
+        embed.addField(timeNormalization(currentLengthInSec) + "/" + timeNormalization(server.information[server.shuffleind].length_seconds),display);
     }
-    display += "⬤";
-    for(var i = percantage; i < 20; i++){
-        if(i!==0) display += "⎯";
-    }
-    embed.addField(timeNormalization(currentLengthInSec) + "/" + timeNormalization(server.information[server.shuffleind].length_seconds),display);
     return embed;
-    // *nincs benne a title
-    // *valószínűleg a bot minden egyes felcsatlakozásnál nem nullázza a pausedtime-ot a korábbi bughoz hasonlóan, further check needed
 }
 
 module.exports.run = async (bot, message, args) => {
     if(!message.guild.voiceConnection) return error(message,'Nem vagyok voice channelen!'); // Ha a bot nincs a voice-on
     server = index.servers[message.guild.id]; // current szerver
     if(!server.dispatcher) return error(message,'Nincs zene a lejátszóban!') // üres a lejátszási lista 
-    embed = createEmbed(server,message);
+    embed = createEmbed(server);
     return await message.channel.send(embed);
 }
 module.exports.help = {

@@ -19,11 +19,19 @@
   "homepage": "https://github.com/simond-hue/new-hope-bot#readme",
   "dependencies": {
     "assert-diff": "^2.0.3",
+    "decompress": "^4.2.0",
+    "decompress-tarxz": "^3.0.0",
     "discord.js": "^11.5.1",
+    "ffbinaries": "^1.1.4",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^3.0.0",
+    "html-entities": "^1.2.1",
     "https-proxy-agent": "^4.0.0",
     "iconv": "^2.3.5",
+    "latest": "github:discordjs/discord.js",
     "libsodium-wrappers": "^0.7.6",
-    "m3u8stream": "^0.6.3",
+    "lzma-native": "^6.0.0",
+    "m3u8stream": "^0.6.4",
     "miniget": "^1.6.1",
     "mocha": "^6.2.2",
     "muk-prop": "^1.2.1",
@@ -37,7 +45,7 @@
     "url": "^0.11.0",
     "util": "^0.12.1",
     "uws": "^100.0.1",
-    "ytdl-core": "^1.0.5"
+    "ytdl-core": "^1.0.6"
   },
   "devDependencies": {
     "@types/node": "^13.1.0",

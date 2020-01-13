@@ -4,16 +4,14 @@ const ytdl = require("ytdl-core");
 
 function timeNormalization(time){
     if(time >= 3600){
-        var currentLength = time;
         hour = Math.floor(time/3600);
-        currentLength -= hour*3600;
-        if(hour < 10) hour = "0"+hour;
+        time = time-hour*3600;
+        if(hour < 10) hour = "0" + hour;
         minutes = Math.floor(time/60);
-        currentLength -= minutes*60;
-        if(minutes < 10) minutes = "0"+minutes;
-        seconds = currentLength;
-        if(seconds < 10) seconds = "0"+seconds;
-        return `${hour}:${minutes}:${seconds}`;
+        time = time-minutes*60;
+        if(minutes < 10) minutes = "0" + minutes;
+        if(time < 10) time = "0" + time;
+        return `${hour}:${minutes}:${time}`;
     }
     else{
         var currentLength = time;

@@ -9,8 +9,14 @@ const port = '49046';
 const proxy = 'http://' + host + ':' +  port;
 const agent = new Agent(proxy);
 */
+
+// TypeError: Cannot read property 'information' of undefined
+// amikor túl gyorsan disconnecteled a botot
+
 var functionInPlay = async function (msg,bt,ar){
     server = index.servers[msg.guild.id];
+    if(!server) return;
+    if(!msg.guild.voiceConnection) return;
     if(!server.information[server.shuffleind]){
         if(server && msg.guild.voiceConnection){
             msg.channel.send(new Discord.RichEmbed()
@@ -42,7 +48,8 @@ var functionInPlay = async function (msg,bt,ar){
         var stream;
         if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent){
             await new Promise((resolve, reject)=>{
-                const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,96,95,94,93] , filter: "audioonly", highWaterMark: 1<<25});
+                const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,93] , highWaterMark: 1<<12});
+                console.log(format);
                 stream = ytdl.downloadFromInfo(server.information[server.shuffleind], format);
                 resolve(stream);
             }).then(async()=>{
@@ -67,7 +74,7 @@ var functionInPlay = async function (msg,bt,ar){
         }
         else{
             await new Promise((resolve, reject)=>{
-                stream = ytdl.downloadFromInfo(server.information[server.shuffleind], {filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1<<25});
+                stream = ytdl.downloadFromInfo(server.information[server.shuffleind], {filter: 'audioonly', quality: 'highestaudio'});
                 resolve(stream);
             }).then(async()=>{
                 if(msg.guild.voiceConnection){
@@ -93,7 +100,8 @@ var functionInPlay = async function (msg,bt,ar){
             msg.guild.voiceConnection.player.streamingData.pausedTime = 0;
             clearTimeout(server.playTimeout);
         });
-        server.dispatcher.on("end", ()=>{
+        server.dispatcher.on("end", (reason)=>{
+            console.log(reason);
             server.dispatcher.end();
             setTimeout(() => {
             if(msg.guild.voiceConnection && server){
@@ -273,8 +281,10 @@ module.exports.run = async (bot, message, args) => {
         }
         if(servers[message.guild.id].summonedChannel === message.member.voiceChannel.id){
             var link = message.content.split(' ')[1];
-            if(link.startsWith('https://www.youtube.com/playlist?')){ //HA PLAYLISTET AD MEG A USER
-                if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
+            if(link.startsWith('https://www.youtube.com/playlist?')){ //HA PLAYLISTET AD MEG A USE)R
+                if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args).then(()=>{
+                    message.guild.voiceConnection.player.streamingData.pausedTime = 0;
+                });
                 var listID = link.split('?')[1].substr(5);
                 if(listID.match(/[a-zA-Z0-9_-]/g)){
                     playlistRequest(
@@ -295,7 +305,9 @@ module.exports.run = async (bot, message, args) => {
                 if(link.startsWith("https://www.youtube.com/watch?")) vidID = link.split("?")[1].split('&')[servers[message.guild.id].shuffleind].substr(2);
                 else if(link.startsWith("https://youtu.be/")) vidID = link.split('/')[3];
                 if(vidID.match(/[a-zA-Z0-9_-]{11}/g)){ //HA video id formátum változna, át kellesz majd írni
-                    if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
+                    if(!message.guild.voiceConnection)  await bot.commands.get("summon").run(bot,message,args).then(()=>{ 
+                        message.guild.voiceConnection.player.streamingData.pausedTime = 0;
+                    });
                     servers = index.servers;
                     servers[message.guild.id].queue.push(link);
                     servers[message.guild.id].requestedBy.push(message.member.user.username);
@@ -303,6 +315,7 @@ module.exports.run = async (bot, message, args) => {
                     await new Promise((resolve, reject)=>{
                         ytdl.getInfo(link,{downloadURL: true}, async(err,info)=>{
                             if(err) console.log(err);
+                            if(!servers) reject();
                             resolvable = servers[message.guild.id].information.push(info);
                             resolve(resolvable);
                         });
@@ -357,8 +370,10 @@ module.exports.run = async (bot, message, args) => {
                             let data = JSON.parse(response.body);
                             let count = Object.keys(data.items).length;
                             if(count>0){
-                                if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
-                                let vidID = data.items[server.shuffleind].id.videoId;
+                                if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args).then(()=>{
+                                    message.guild.voiceConnection.player.streamingData.pausedTime = 0;
+                                });
+                                let vidID = data.items[servers[message.guild.id].shuffleind].id.videoId;
                                 index = require("../index.js");
                                 servers = index.servers;
                                 servers[message.guild.id].queue.push(`https://www.youtube.com/watch?v=${vidID}`);
