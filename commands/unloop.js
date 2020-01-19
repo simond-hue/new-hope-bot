@@ -9,6 +9,10 @@ module.exports.run = async (bot, message, args) => {
     if(!message.guild.voiceConnection) return giveError(message, 'Nem vagyok voice channelen!');
     if(!message.member.voiceChannel) return giveError(message, 'Voice channelben kell lenned, hogy tudj loopolni a zenelejátszót!');
     let server = index.servers[message.guild.id];
+    if(server.information[server.shuffleind].player_response.videoDetails.isLive) return giveError(message,'Live-ot nem lehet unloop-olni!');
+    if(servers[message.guild.id].summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
+        if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
+            servers[message.guild.id].summonedChannel = message.member.voiceChannel.id;
     if(server.summonedChannel !== message.member.voiceChannel.id) return giveError(message, 'Nem vagyunk ugyanabban a szobában!');
     if(!server.dispatcher) return giveError(message, 'Nincs zene a lejátszóban!');
     if(!server.looped) return giveError(message, 'Nincs loop-olva a zene!');

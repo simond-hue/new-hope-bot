@@ -46,40 +46,17 @@ var functionInPlay = async function (msg,bt,ar){
     }
     else{
         var stream;
-        if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent){
+        if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent && server.information[server.shuffleind].player_response.videoDetails.isLive){
             await new Promise((resolve, reject)=>{
-                const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,93] , highWaterMark: 1<<12});
+                const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,93] , highWaterMark: 1<<25});
                 console.log(format);
                 stream = ytdl.downloadFromInfo(server.information[server.shuffleind], format);
                 resolve(stream);
             }).then(async()=>{
                 if(msg.guild.voiceConnection){
                     server.dispatcher = await msg.guild.voiceConnection.playStream(stream);
-                    msg.channel.send(new Discord.RichEmbed()
-                    .setColor("#DABC12")
-                    .setTitle("Jelenlegi zeneszám")
-                    .setURL(server.queue[server.shuffleind])
-                    .setDescription(servers[msg.guild.id].information[server.shuffleind].title)
-                    .setFooter(
-                        `Kérte: ${server.requestedBy[server.shuffleind]}`,
-                        server.requestedByProfPic[server.shuffleind]
-                    )
-                    .setThumbnail(server.information[server.shuffleind].player_response.videoDetails.thumbnail.thumbnails[0].url)
-                    .setAuthor(
-                        "New Hope Bot",
-                        "https://cdn.discordapp.com/avatars/626527448858886184/9c28e993dc55dd11fe6e0daf5e4c351b.png"
-                    ));
-                }
-            });
-        }
-        else{
-            await new Promise((resolve, reject)=>{
-                stream = ytdl.downloadFromInfo(server.information[server.shuffleind], {filter: 'audioonly', quality: 'highestaudio'});
-                resolve(stream);
-            }).then(async()=>{
-                if(msg.guild.voiceConnection){
-                    server.dispatcher = await msg.guild.voiceConnection.playStream(stream);
-                    msg.channel.send(new Discord.RichEmbed()
+                    if(!server.looped)
+                        msg.channel.send(new Discord.RichEmbed()
                         .setColor("#DABC12")
                         .setTitle("Jelenlegi zeneszám")
                         .setURL(server.queue[server.shuffleind])
@@ -95,6 +72,32 @@ var functionInPlay = async function (msg,bt,ar){
                         ));
                 }
             });
+            server.looped = true;
+        }
+        else{
+            await new Promise((resolve, reject)=>{
+                stream = ytdl.downloadFromInfo(server.information[server.shuffleind], {filter: 'audioonly', quality: 'highestaudio', highWaterMark:1<<25});
+                resolve(stream);
+            }).then(async()=>{
+                if(msg.guild.voiceConnection){
+                    server.dispatcher = await msg.guild.voiceConnection.playStream(stream);
+                    if(!server.looped)
+                        msg.channel.send(new Discord.RichEmbed()
+                            .setColor("#DABC12")
+                            .setTitle("Jelenlegi zeneszám")
+                            .setURL(server.queue[server.shuffleind])
+                            .setDescription(servers[msg.guild.id].information[server.shuffleind].title)
+                            .setFooter(
+                                `Kérte: ${server.requestedBy[server.shuffleind]}`,
+                                server.requestedByProfPic[server.shuffleind]
+                            )
+                            .setThumbnail(server.information[server.shuffleind].player_response.videoDetails.thumbnail.thumbnails[0].url)
+                            .setAuthor(
+                                "New Hope Bot",
+                                "https://cdn.discordapp.com/avatars/626527448858886184/9c28e993dc55dd11fe6e0daf5e4c351b.png"
+                            ));
+                }
+            });
         }
         server.dispatcher.on('start', ()=> {
             msg.guild.voiceConnection.player.streamingData.pausedTime = 0;
@@ -107,6 +110,7 @@ var functionInPlay = async function (msg,bt,ar){
             if(msg.guild.voiceConnection && server){
                 server.skips = 0;
                 server.skippedBy = [];
+                
                 if(!server.looped && !server.shuffled){
                     server.queue.shift();
                     server.information.shift();
@@ -219,20 +223,6 @@ async function afterPromise(msg,bt,ar,lnk){
         if(!servers[msg.guild.id].summonedVoiceConnection) servers[msg.guild.id].summonedVoiceConnection = msg.guild.voiceConnection;
         voice = msg.member.voiceChannel;
         connection = msg.guild.voiceConnection;
-        setInterval(() => {
-            var botok = true;
-            voice.members.forEach(element => {
-                if(element.user.bot === false) botok = false;
-            });
-            if(botok){
-                connection.disconnect();
-                servers = index.servers;
-                if(servers[msg.guild.id]){
-                    delete servers[msg.guild.id];
-                    index.servers = servers;
-                }
-            }
-        }, 300000);
     }
 }
 
@@ -275,7 +265,8 @@ module.exports.run = async (bot, message, args) => {
                     queueCanBeCalled: true,
                     looped: false,
                     shuffled: false,
-                    shuffleind: 0
+                    shuffleind: 0,
+                    botInterval: null
                 };
             }
         }

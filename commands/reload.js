@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args) => {
         .setColor("#DABC12")
         .addField("Újraindítás...", "Újraindítás..."))
     .then(msg => bot.destroy())
-    .then(() => bot.login(/*process.env.token*/));
+    .then(() => bot.login(/*process.env.token*/""));
     bot.commands = new Discord.Collection();
     fs.readdir("./commands", (err, files) => {
         if (err) console.log(err);

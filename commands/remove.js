@@ -10,6 +10,9 @@ module.exports.run = async (bot, message, args) => {
     if(!message.guild.voiceConnection) return error(message,'Nem vagyok voice channelen!'); // Ha a bot nincs a voice-on
     if(!message.member.voiceChannel) return giveError(message, 'Voice channelben kell lenned, hogy tudj zenét törölni a listáról!');
     server = index.servers[message.guild.id]; // current szerver
+    if(servers[message.guild.id].summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
+        if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
+            servers[message.guild.id].summonedChannel = message.member.voiceChannel.id;
     if(server.summonedChannel !== message.member.voiceChannel.id) return giveError(message, 'Nem vagyunk ugyanabban a szobában!');
     if(server.queue.length === 0) return error(message,'Üres a lejátszási lista!') // üres a lejátszási lista
     if(message.content.split(' ').length < 2) return giveError(message, 'Üres argumentum!');

@@ -17,20 +17,6 @@ module.exports.run = async (bot, message, args) => {
         else{
             voice = message.member.voiceChannel;
             connection = message.guild.voiceConnection;
-            setInterval(() => {
-                var botok = true;
-                voice.members.forEach(element => {
-                    if(element.user.bot === false) botok = false;
-                });
-                if(botok){
-                    connection.disconnect();
-                    servers = index.servers;
-                    if(servers[message.guild.id]){
-                        delete servers[message.guild.id];
-                        index.servers = servers;
-                    }
-                }
-            }, 600000);
             await message.member.voiceChannel.join();
             servers = index.servers;
             if(!servers[message.guild.id]){
@@ -47,9 +33,12 @@ module.exports.run = async (bot, message, args) => {
                     page: 0,
                     queueCanBeCalled: true,
                     looped: false,
-                    shuffled: false
+                    shuffled: false,
+                    shuffleind: 0,
+                    botInterval: null
                 };
             }
+            this.botok(message,servers);
             setTimeout(() => {
                 if(servers[message.guild.id])
                     if(!servers[message.guild.id].voltLejatszvaZene && message.guild.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
@@ -57,6 +46,49 @@ module.exports.run = async (bot, message, args) => {
         }
     }
 }
+
+function bots(message,servers){
+    var botusers = true;
+    servers[message.guild.id].summonedVoiceConnection = message.guild.voiceConnection;
+    message.guild.channels.forEach(element =>{
+        if(element.members)
+            element.members.forEach(user =>{
+                if(user.id === message.guild.me.id){
+                    servers[message.guild.id].summonedChannel = element.id;
+                }
+            })
+    })
+    message.guild.channels.get(servers[message.guild.id].summonedChannel).members.forEach(element => {
+        if(element.user.bot === false) botusers = false;
+    });
+    return botusers;
+}
+
+module.exports.botok = async(message,servers)=>{
+    var botok = false;
+    setTimeout(async() => {
+        if(!servers[message.guild.id]) return;
+        if(servers[message.guild.id]){
+            botok = bots(message,servers);       
+        }
+        if(!botok){
+            return this.botok(message,servers);
+        }
+        if(botok){
+            if(server.summonedVoiceConnection) {
+                server.summonedVoiceConnection.disconnect();
+                server.summonedVoiceConnection = null;
+            }
+            else if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+
+            if(servers[message.guild.id]){
+                await delete servers[message.guild.id];
+                index.servers = servers;
+            }
+        } 
+    }, 600000)
+}
+
 module.exports.help = {
     name: "summon",
     type: "music",

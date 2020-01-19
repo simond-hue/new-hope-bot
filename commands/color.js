@@ -55,7 +55,7 @@ module.exports.run = async (bot, message, args) => {
                                                 })
                                                 .then(async(role) => {
                                                     message.member.addRole(role);
-                                                    await lastMessage.delete();
+                                                    if(lastMessage) await lastMessage.delete();
                                                     message.channel.send(new Discord.RichEmbed()
                                                         .setColor(argsSplitSpace)
                                                         .setTitle("Névszín")
@@ -73,7 +73,7 @@ module.exports.run = async (bot, message, args) => {
                                                 })
                                                 .then(async(role) => {
                                                     message.member.addRole(role);
-                                                    await lastMessage.delete();
+                                                    if(lastMessage) await lastMessage.delete();
                                                     message.channel.send(new Discord.RichEmbed()
                                                         .setColor(argsSplitSpace)
                                                         .setTitle("Névszín")
@@ -96,14 +96,14 @@ module.exports.run = async (bot, message, args) => {
                                     }
                                 }else if(chosen === "❌"){
                                     if(message.guild.me.hasPermission("MANAGE_MESSAGES")){
-                                        lastMessage.delete();
+                                        if(lastMessage) lastMessage.delete();
                                         let embed = new Discord.RichEmbed()
                                             .setColor('#FFFFFF')
                                             .addField("Mégse","A neved színét nem változtattad meg!");
                                         message.channel.send(embed)
                                         .then(async(embed) => {
-                                            await embed.delete(5000);
-                                            message.delete();
+                                            if(embed) await embed.delete(5000);
+                                            if(mesasge) message.delete();
                                         });
                                     }
                                     else{
@@ -116,14 +116,14 @@ module.exports.run = async (bot, message, args) => {
                             })
                             .once("end", () => {
                                 if(collector.users.size === 0){
-                                        lastMessage.delete();
+                                        if(lastMessage) lastMessage.delete();
                                         let embed = new Discord.RichEmbed()
                                             .setColor('#FFFFFF')
                                             .addField("Timeout","Túllépted az időkorlátot!");
                                         message.channel.send(embed)
                                         .then(async(embed) => {
-                                            await embed.delete(5000);
-                                            message.delete();
+                                            if(embed) await embed.delete(5000);
+                                            if(mesasge) message.delete();
                                         });
                                     }
                             });

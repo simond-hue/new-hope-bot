@@ -18,6 +18,7 @@ module.exports.run = async (bot, message, args) => {
     
             servers = index.servers;
             if(servers[message.guild.id]){
+                clearInterval(servers[message.guild.id].botInterval);
                 await delete servers[message.guild.id];
                 index.servers = servers;
             }

@@ -344,3 +344,77 @@
 [2020-1-13 1:14:31] Nidasimnowo: new-setprefix xd
 [2020-1-13 2:5:42] Nidasimnowo: new-color #123123
 [2020-1-13 2:6:16] Nidasimnowo: new-color #b063b5
+[2020-1-15 13:46:11] Nidasimnowo: new-p https://www.youtube.com/watch?v=bn1YCClRF-g
+[2020-1-15 14:0:13] Nidasimnowo: new-p https://www.youtube.com/watch?v=bn1YCClRF-g
+[2020-1-15 14:7:46] Nidasimnowo: new-p https://www.youtube.com/watch?v=bn1YCClRF-g
+[2020-1-15 14:11:36] Nidasimnowo: new-p https://www.youtube.com/watch?v=bn1YCClRF-g
+[2020-1-15 14:20:21] Nidasimnowo: new-p https://www.youtube.com/watch?v=bn1YCClRF-g
+[2020-1-15 14:24:34] Nidasimnowo: new-p https://www.youtube.com/watch?v=bn1YCClRF-g
+[2020-1-15 14:34:28] Nidasimnowo: new-p
+[2020-1-15 14:34:32] Nidasimnowo: new-p https://www.youtube.com/watch?v=R8r8bzPcDP4
+[2020-1-15 14:36:42] Nidasimnowo: new-l
+[2020-1-15 22:17:15] FanthomV: new-p https://www.youtube.com/watch?v=hHW1oY26kxQ
+[2020-1-15 22:18:42] FanthomV: new-dc
+[2020-1-16 9:19:28] bambasAI: new-color #FFFFFF
+[2020-1-16 9:20:8] bambasAI: new-color #000001
+[2020-1-16 13:51:21] Nidasimnowo: new-p https://www.youtube.com/watch?v=hHW1oY26kxQ
+[2020-1-16 16:3:53] Nidasimnowo: new-dc
+[2020-1-16 23:48:43] Nidasimnowo: new-color #b063b5
+[2020-1-17 7:12:31] Nidasimnowo: new-p https://www.youtube.com/playlist?list=PLJK_q29nB_39gB09l_2QqdfWCxGcyBF3Y
+[2020-1-17 7:12:38] Nidasimnowo: new-shuffle
+[2020-1-17 7:46:9] Nidasimnowo: new-s
+[2020-1-17 8:37:56] Nidasimnowo: new-s
+[2020-1-17 9:15:13] Nidasimnowo: new-weather Budapest
+[2020-1-17 9:53:12] Nidasimnowo: new-stop
+[2020-1-17 9:53:30] Nidasimnowo: new-us
+[2020-1-17 9:53:33] Nidasimnowo: new-unstop
+[2020-1-17 11:30:6] Nidasimnowo: new-q
+[2020-1-17 11:30:13] Nidasimnowo: new-q
+[2020-1-17 11:30:18] Nidasimnowo: new-q
+[2020-1-17 11:30:25] Nidasimnowo: new-dc
+[2020-1-17 11:30:30] Nidasimnowo: new-summon
+[2020-1-17 11:30:49] Nidasimnowo: new-p despacito
+[2020-1-17 19:58:26] Lukacs: new-p https://youtu.be/-AsRY-tnO_M
+[2020-1-18 0:49:29] mezeizsivány: new-p https://www.youtube.com/watch?v=tVnpiXfYN4M
+[2020-1-18 0:50:25] 『𝕸𝖊𝖙𝖆𝖆』: new-dc
+[2020-1-18 1:16:44] 󠀀󠀀 󠀀󠀀: new-play https://youtu.be/Akx48dLnccQ
+[2020-1-18 7:58:0] Yamoshi: new-delwordchainch
+[2020-1-18 7:58:9] Yamoshi: new-setwordchainch
+[2020-1-18 13:16:8] Nidasimnowo: new-p https://www.youtube.com/playlist?list=PLJK_q29nB_39gB09l_2QqdfWCxGcyBF3Y
+[2020-1-18 13:16:14] Nidasimnowo: new-shuffle
+[2020-1-18 13:17:2] Green: new-color #48eb02
+[2020-1-18 13:18:34] Nidasimnowo: new-color #48eb02
+[2020-1-18 13:23:49] Nidasimnowo: new-p https://www.youtube.com/playlist?list=PLJK_q29nB_39gB09l_2QqdfWCxGcyBF3Y
+[2020-1-18 13:24:12] Nidasimnowo: new-shuffle
+[2020-1-18 13:40:59] Nidasimnowo: new-q
+[2020-1-18 13:45:38] Nidasimnowo: new-p https://www.youtube.com/playlist?list=PLJK_q29nB_39gB09l_2QqdfWCxGcyBF3Y
+[2020-1-18 13:45:41] Nidasimnowo: new-shuffle
+[2020-1-18 13:45:42] Nidasimnowo: new-s
+[2020-1-18 14:5:19] Nidasimnowo: new-dc
+[2020-1-18 17:15:28] bambasAI: new-p https://www.youtube.com/watch?v=jM5AYgKpKg0
+[2020-1-18 17:16:44] bambasAI: new-dc
+[2020-1-18 20:13:53] FanthomV: new-p esti kornél segítség
+[2020-1-18 20:29:35] Green: new-play https://www.youtube.com/watch?v=18YQXoc814Y
+[2020-1-18 20:29:47] 『𝕸𝖊𝖙𝖆𝖆』: new-dc
+[2020-1-18 20:29:48] Nidasimnowo: new-dc
+[2020-1-19 0:13:59] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/playlist?list=PL9Pm_3BIoerSTMX7A2n8Qo95vg2byxSsN
+[2020-1-19 0:14:6] 『𝕸𝖊𝖙𝖆𝖆』: new-s
+[2020-1-19 0:14:17] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/watch?v=gOQasye6VUs
+[2020-1-19 0:38:32] 『𝕸𝖊𝖙𝖆𝖆』: new-s
+[2020-1-19 0:41:50] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/watch?v=W_5unoZTpoQ
+[2020-1-19 0:43:24] 『𝕸𝖊𝖙𝖆𝖆』: new-s https://www.youtube.com/watch?v=RgQuQVljHcg
+[2020-1-19 0:43:34] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/watch?v=RgQuQVljHcg
+[2020-1-19 0:43:45] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/watch?v=wzKTtoMC-uY
+[2020-1-19 0:43:54] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/watch?v=R2ct_Gkq-HQ
+[2020-1-19 0:44:6] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/watch?v=DaTFaqxDomk
+[2020-1-19 0:44:31] 『𝕸𝖊𝖙𝖆𝖆』: new-p https://www.youtube.com/playlist?list=PL9Pm_3BIoerSC0UEUNehRlOzxjVjILg0x
+[2020-1-19 13:11:13] Nidasimnowo: new-s
+[2020-1-19 13:11:45] Nidasimnowo: new-s
+[2020-1-19 13:12:1] Nidasimnowo: new-s
+[2020-1-19 13:12:4] Nidasimnowo: new-s
+[2020-1-19 13:35:22] Nidasimnowo: new-l
+[2020-1-19 13:35:32] Nidasimnowo: new-np
+[2020-1-19 13:35:48] Nidasimnowo: new-l
+[2020-1-19 13:38:49] Nidasimnowo: new-q
+[2020-1-19 13:38:52] Nidasimnowo: new-q
+[2020-1-19 13:54:57] Nidasimnowo: new-l
