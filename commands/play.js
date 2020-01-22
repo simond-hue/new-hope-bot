@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
 const request = require('request');
 var index = require("../index.js");
+const botconfig = require("../botconfig.json");
 /*
 const Agent = require('https-proxy-agent');
 const host = '109.251.197.33';
@@ -279,7 +280,7 @@ module.exports.run = async (bot, message, args) => {
                 var listID = link.split('?')[1].substr(5);
                 if(listID.match(/[a-zA-Z0-9_-]/g)){
                     playlistRequest(
-                    `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${listID}&key=AIzaSyBHaQui_pXc1RtZhYCOrCiudDtSoQCMv-M`,
+                    `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${listID}&key=${botconfig.ytAPIKEY}`,
                     '',
                     message,
                     bot,
@@ -352,11 +353,12 @@ module.exports.run = async (bot, message, args) => {
                 for(var i = 1; i<arg.length; i++){
                     query[i] = arg[i];
                 }
-                request(`https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(query.join('+'))}&type=video&key=AIzaSyBHaQui_pXc1RtZhYCOrCiudDtSoQCMv-M&maxResults=1`,
+                request(`https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(query.join('+'))}&type=video&key=${botconfig.ytAPIKEY}&maxResults=1`,
                     async(error, response, body) =>{
                         if(!response) message.channel.send(new Discord.RichEmbed()
                                             .setColor('#DABC12')
                                             .setTitle('Váratlan hiba történt!'));
+                        console.log(response.statusCode);
                         if(response.statusCode === 200){
                             let data = JSON.parse(response.body);
                             let count = Object.keys(data.items).length;
