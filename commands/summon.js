@@ -66,7 +66,7 @@ function bots(message,servers){
 
 module.exports.botok = async(message,servers)=>{
     var botok = false;
-    setTimeout(async() => {
+    setInterval(async() => {
         if(!servers[message.guild.id]) return;
         if(servers[message.guild.id]){
             botok = bots(message,servers);       

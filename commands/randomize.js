@@ -50,5 +50,5 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
     name: "randomize",
     type: "music",
-    alias: ["r", "rnd", "shuff"]
+    alias: ["rnd"]
 }

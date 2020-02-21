@@ -14,6 +14,10 @@ const agent = new Agent(proxy);
 // TypeError: Cannot read property 'information' of undefined
 // amikor túl gyorsan disconnecteled a botot
 
+module.exports.exportedPlay = async(message,bot,args)=>{
+    play(message,bot,args);
+}
+
 var functionInPlay = async function (msg,bt,ar){
     server = index.servers[msg.guild.id];
     if(!server) return;
@@ -50,7 +54,6 @@ var functionInPlay = async function (msg,bt,ar){
         if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent && server.information[server.shuffleind].player_response.videoDetails.isLive){
             await new Promise((resolve, reject)=>{
                 const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,93] , highWaterMark: 1<<25});
-                console.log(format);
                 stream = ytdl.downloadFromInfo(server.information[server.shuffleind], format);
                 resolve(stream);
             }).then(async()=>{
